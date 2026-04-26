@@ -78,7 +78,7 @@ SC.createLabelInput = function (aType, aValue) {
     input.type = 'number';
     input.min = 0;
     input.max = 100;
-    input.step = 10;
+    input.step = 1;
     input.dataType = aType;
     input.dataValue = aValue;
     input.addEventListener('change', SC.onUpdateCount);

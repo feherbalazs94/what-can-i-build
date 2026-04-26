@@ -333,6 +333,28 @@
   opacity: 1;
 }
 
+/* ── Per-row +10 button ── */
+.ob-plus-ten {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  padding: 3px 6px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  line-height: 1.4;
+}
+
+.ob-plus-ten:hover {
+  color: var(--amber);
+  border-color: var(--amber-border);
+  background: var(--amber-bg);
+}
+
 /* ── Footer actions ── */
 .ob-actions {
   display: flex;

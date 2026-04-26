@@ -128,27 +128,41 @@ SC.onboarding = (function () {
             input.type = 'number';
             input.min = 0;
             input.max = 999;
-            input.step = 10;
+            input.step = 1;
             input.placeholder = '0';
             var stored = SC.counts[type] && SC.counts[type][p.value];
             input.value = stored ? stored : '';
 
-            input.addEventListener('input', (function (ptype, pvalue) {
+            var syncInput = (function (ptype, pvalue, inp) {
                 return function () {
                     SC.counts[ptype] = SC.counts[ptype] || {};
-                    var n = parseInt(input.value, 10);
+                    var n = parseInt(inp.value, 10);
                     SC.counts[ptype][pvalue] = isNaN(n) ? 0 : n;
                     if (SC.values[ptype] && SC.values[ptype][pvalue]) {
-                        SC.values[ptype][pvalue].input.value = input.value;
+                        SC.values[ptype][pvalue].input.value = inp.value;
                     }
                     CA.storage.writeObject('SC.counts', SC.counts);
                     SC.sync.schedule && SC.sync.schedule();
                 };
-            }(type, p.value)));
+            }(type, p.value, input));
+
+            input.addEventListener('input', syncInput);
+
+            var plusTen = document.createElement('button');
+            plusTen.className = 'ob-plus-ten';
+            plusTen.textContent = '+10';
+            plusTen.type = 'button';
+            plusTen.addEventListener('click', (function (inp, fn) {
+                return function () {
+                    inp.value = (parseInt(inp.value, 10) || 0) + 10;
+                    fn();
+                };
+            }(input, syncInput)));
 
             row.appendChild(nameEl);
             row.appendChild(freqEl);
             row.appendChild(input);
+            row.appendChild(plusTen);
             grid.appendChild(row);
         });
 

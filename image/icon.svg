@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark PCB substrate -->
+  <rect width="32" height="32" rx="6" fill="#07050b"/>
+
+  <!-- PCB trace — horizontal -->
+  <rect x="0" y="13.5" width="32" height="5" fill="#140e05" rx="1"/>
+  <!-- PCB trace — vertical -->
+  <rect x="13.5" y="0" width="5" height="32" fill="#140e05" rx="1"/>
+
+  <!-- Corner copper pads -->
+  <circle cx="5"  cy="5"  r="2" fill="#2a1800"/>
+  <circle cx="27" cy="5"  r="2" fill="#2a1800"/>
+  <circle cx="5"  cy="27" r="2" fill="#2a1800"/>
+  <circle cx="27" cy="27" r="2" fill="#2a1800"/>
+
+  <!-- Annular ring (PCB via pad) -->
+  <circle cx="16" cy="16" r="10" fill="#0a0706" stroke="#3d2200" stroke-width="1.5"/>
+
+  <!-- LED glow — outermost -->
+  <circle cx="16" cy="16" r="7.5" fill="#3d1e00" opacity="0.5"/>
+  <!-- LED body -->
+  <circle cx="16" cy="16" r="5.5" fill="#8a4a00"/>
+  <!-- LED surface -->
+  <circle cx="16" cy="16" r="4"   fill="#e8870a"/>
+  <!-- LED hot core -->
+  <circle cx="16" cy="16" r="2.2" fill="#ffaa20"/>
+  <!-- Specular highlight -->
+  <circle cx="14.2" cy="14.2" r="1.1" fill="#fff4cc" opacity="0.55"/>
+</svg>
