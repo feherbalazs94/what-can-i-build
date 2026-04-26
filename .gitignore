@@ -1,0 +1,8 @@
+# Claude Code session files
+.claude/
+
+# Superpowers brainstorm mockups
+.superpowers/
+
+# macOS
+.DS_Store
