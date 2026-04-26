@@ -1,45 +1,166 @@
-/* table styling */
+/* dark table styling */
 
 table {
-    width: 100%;
+  width: 100%;
+  border-collapse: collapse;
 }
-table, tr, td {
-    border-collapse: collapse;
-    margin: 0;
-    padding: 0;
+
+table, tr, td, th {
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
 }
+
 td {
-    vertical-align: top;
+  vertical-align: top;
 }
-table.border, table.border tr, table.border th, table.border td {
-    border: 1px solid black;
-    border-collapse: collapse;
+
+th {
+  padding: 7px 8px 7px 20px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  white-space: nowrap;
 }
+
+th:last-child {
+  padding-right: 20px;
+}
+
+th.sticky {
+  position: sticky;
+  top: 49px;
+  z-index: 5;
+}
+
 table td {
-    padding: 0.3ex;
+  padding: 10px 8px 10px 20px;
+  border-bottom: 1px solid #111a28;
 }
+
+table td:last-child {
+  padding-right: 20px;
+}
+
 table td.full {
-    width: 100%;
+  width: 100%;
 }
-table .error {
-    color: red;
+
+/* Row hover */
+table tr:hover td {
+  background: #0e1724;
 }
+
+/* Circuit name + author */
+.circuit-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+  display: block;
+}
+
+.circuit-author {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* Substitution warnings */
 table .warning {
-    color: green;
+  color: #22c55e;
+  font-size: 11px;
+  margin-top: 3px;
 }
+
+/* Error text (kept for non-possible view) */
+table .error {
+  color: var(--red-chip-text);
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+/* Link column */
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 36px;
+}
+
+td a {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #131c27;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+td a[href]:not([href=""]):hover {
+  background: var(--blue-bg);
+  border-color: var(--blue-border);
+  color: var(--blue);
+}
+
+/* Complexity column */
+.complexity {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.complexity b {
+  color: var(--text-dim);
+}
+
+/* Done label+checkbox (CA.labelCheckbox output) */
+table label {
+  font-size: 11px;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+table label input[type=checkbox] {
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
 table td.nowrap {
-    white-space: nowrap;
-}
-table tr:hover {
-    background-color: #ccddee;
-}
-td a.link {
-    width: 16px;
-    height: 16px;
-    background-color: red;
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+  white-space: nowrap;
 }
 
+/* ─── "Almost" section: missing parts chips ─── */
 
+.missing-parts {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.missing-chip {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--red-chip-bg);
+  border: 1px solid var(--red-chip-border);
+  color: var(--red-chip-text);
+}
+
+.missing-chip::before {
+  content: '− ';
+  font-weight: 700;
+}
