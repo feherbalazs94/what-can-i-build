@@ -14,29 +14,31 @@
 
     <link rel="shortcut icon" href="image/icon.png" type="image/png" />
 
-    <link rel="stylesheet" href="css/index.css?version=273" type="text/css" />
-    <link rel="stylesheet" href="css/sidebar.css?version=273" type="text/css" />
-    <link rel="stylesheet" href="css/table.css?version=273" type="text/css" />
-    <link rel="stylesheet" href="css/mobile.css?version=273" type="text/css" />
-    <link rel="stylesheet" href="css/welcome.css?version=273" type="text/css" />
-    <link rel="stylesheet" href="css/auth.css?version=273" type="text/css" />
+    <link rel="stylesheet" href="css/index.css?version=274" type="text/css" />
+    <link rel="stylesheet" href="css/sidebar.css?version=274" type="text/css" />
+    <link rel="stylesheet" href="css/table.css?version=274" type="text/css" />
+    <link rel="stylesheet" href="css/mobile.css?version=274" type="text/css" />
+    <link rel="stylesheet" href="css/welcome.css?version=274" type="text/css" />
+    <link rel="stylesheet" href="css/auth.css?version=274" type="text/css" />
+    <link rel="stylesheet" href="css/onboarding.css?version=274" type="text/css" />
 
     <!-- Supabase CDN (used when SUPABASE_CONFIGURED = true) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
-    <script type="text/javascript" src="depend/canvas/canvas.src.js?version=273"></script>
-    <script type="text/javascript" src="circuit/circuits.js?version=273"></script>
+    <script type="text/javascript" src="depend/canvas/canvas.src.js?version=274"></script>
+    <script type="text/javascript" src="circuit/circuits.js?version=274"></script>
 
-    <script type="text/javascript" src="js/config.js?version=273"></script>
-    <script type="text/javascript" src="js/global.js?version=273"></script>
-    <script type="text/javascript" src="js/utils.js?version=273"></script>
-    <script type="text/javascript" src="js/engineering.js?version=273"></script>
-    <script type="text/javascript" src="js/check_new_circuits.js?version=273"></script>
-    <script type="text/javascript" src="js/auth.js?version=273"></script>
-    <script type="text/javascript" src="js/sync.js?version=273"></script>
-    <script type="text/javascript" src="js/index.js?version=273"></script>
-    <script type="text/javascript" src="js/render.js?version=273"></script>
-    <script type="text/javascript" src="js/filter.js?version=273"></script>
+    <script type="text/javascript" src="js/config.js?version=274"></script>
+    <script type="text/javascript" src="js/global.js?version=274"></script>
+    <script type="text/javascript" src="js/utils.js?version=274"></script>
+    <script type="text/javascript" src="js/engineering.js?version=274"></script>
+    <script type="text/javascript" src="js/check_new_circuits.js?version=274"></script>
+    <script type="text/javascript" src="js/auth.js?version=274"></script>
+    <script type="text/javascript" src="js/sync.js?version=274"></script>
+    <script type="text/javascript" src="js/index.js?version=274"></script>
+    <script type="text/javascript" src="js/render.js?version=274"></script>
+    <script type="text/javascript" src="js/filter.js?version=274"></script>
+    <script type="text/javascript" src="js/onboarding.js?version=274"></script>
 
   </head>
   <body>
@@ -108,6 +110,7 @@
 
         <div class="sidebar-title">
             <h1>What do I have</h1>
+            <button id="sidebar-toggle" title="Collapse sidebar"><span class="toggle-arrow">‹</span></button>
         </div>
 
         <!-- Save-to-account banner (shown when user has parts but isn't signed in) -->
@@ -366,6 +369,32 @@
         Nothing to show. Try entering some parts in the sidebar.</div>
 
     </main>
+
+    <!-- ══ Onboarding journey ════════════════════════════════════════ -->
+    <div id="onboarding-overlay">
+      <div class="ob-card">
+        <div class="ob-header">
+          <span class="ob-icon">Ω</span>
+          <div class="ob-header-text">
+            <h2 class="ob-category">Resistors</h2>
+            <span class="ob-step-num">1 / 8</span>
+          </div>
+          <div class="ob-sort-bar">
+            <button class="ob-sort-btn active" data-sort="freq">By use</button>
+            <button class="ob-sort-btn" data-sort="alpha">Alpha</button>
+          </div>
+        </div>
+        <div class="ob-progress-bar"><div class="ob-progress-fill" style="width:0%"></div></div>
+        <div class="ob-hint">Enter how many of each value you have in your parts bin.</div>
+        <div class="ob-grid-wrap">
+          <div class="ob-parts-grid"></div>
+        </div>
+        <div class="ob-actions">
+          <button class="ob-skip-btn">Skip category</button>
+          <button class="ob-next-btn">Next →</button>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>

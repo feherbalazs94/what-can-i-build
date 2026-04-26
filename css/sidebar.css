@@ -256,28 +256,32 @@ input[type=number]::-webkit-outer-spin-button {
 /* ── +10 all action bar ── */
 .sb-actions {
   display: flex;
-  justify-content: flex-end;
-  padding: 4px 10px 0;
+  justify-content: stretch;
+  padding: 6px 10px 2px;
 }
 
 .plus10all {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 400;
-  color: var(--border);
+  color: var(--amber);
   cursor: pointer;
-  padding: 2px 7px;
+  padding: 5px 0;
   border-radius: 2px;
-  border: 1px solid transparent;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
-  letter-spacing: 0.05em;
+  border: 1px solid var(--amber-border);
+  background: var(--amber-bg);
+  transition: color 0.15s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 .plus10all:hover {
-  color: var(--amber);
-  border-color: var(--amber-border);
-  background: var(--amber-bg);
+  color: var(--amber-bright);
+  border-color: var(--amber);
+  box-shadow: 0 0 10px rgba(232, 135, 10, 0.2);
 }
 
 /* ── Sync banner ── */
@@ -327,6 +331,71 @@ input[type=number]::-webkit-outer-spin-button {
   color: var(--copper-dim);
 }
 
+/* ── Sidebar toggle button ── */
+#sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, background 0.12s;
+  padding: 0;
+  line-height: 1;
+  margin-left: auto;
+}
+
+#sidebar-toggle:hover {
+  color: var(--amber);
+  border-color: var(--amber-border);
+  background: var(--amber-bg);
+}
+
+/* ── Collapsed state ── */
+#sidebar {
+  transition: width 0.22s ease;
+  overflow: hidden;
+}
+
+#sidebar.is-collapsed {
+  width: 40px;
+  min-width: 0;
+}
+
+#sidebar.is-collapsed .sb-section,
+#sidebar.is-collapsed #sync-banner,
+#sidebar.is-collapsed .bottom {
+  display: none;
+}
+
+#sidebar.is-collapsed .sidebar-title h1 {
+  display: none;
+}
+
+#sidebar.is-collapsed .sidebar-title {
+  padding: 8px 6px;
+  justify-content: center;
+}
+
+#sidebar.is-collapsed #sidebar-toggle {
+  margin-left: 0;
+  border-color: var(--amber-border);
+  color: var(--amber);
+  background: var(--amber-bg);
+}
+
+/* Rotate arrow when collapsed */
+#sidebar.is-collapsed #sidebar-toggle .toggle-arrow {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
 /* ── Mobile ── */
 @media only screen and (max-width: 700px) {
   #sidebar {
@@ -335,4 +404,5 @@ input[type=number]::-webkit-outer-spin-button {
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
+  #sidebar-toggle { display: none; }
 }

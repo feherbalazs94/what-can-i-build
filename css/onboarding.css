@@ -1,0 +1,325 @@
+/* Guided onboarding journey — Boutique Pedal Workbench */
+
+#onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(6, 5, 10, 0.92);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* PCB grid inherited from body */
+#onboarding-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.008) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.008) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+/* ── Card ── */
+.ob-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: 1px solid var(--amber-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 40px);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02),
+    0 0 48px rgba(232, 135, 10, 0.1),
+    0 24px 64px rgba(0, 0, 0, 0.7);
+}
+
+/* Copper trace at card top */
+.ob-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--copper), transparent);
+  pointer-events: none;
+}
+
+/* ── Header ── */
+.ob-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ob-icon {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--amber);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 3px;
+  flex-shrink: 0;
+  text-shadow: 0 0 12px rgba(232, 135, 10, 0.5);
+}
+
+.ob-header-text {
+  flex: 1;
+}
+
+.ob-category {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0 0 2px;
+  line-height: 1;
+}
+
+.ob-step-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── Sort buttons ── */
+.ob-sort-bar {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.ob-sort-btn {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+
+.ob-sort-btn:hover {
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.ob-sort-btn.active {
+  background: var(--amber-bg);
+  border-color: var(--amber-border);
+  color: var(--amber);
+}
+
+/* ── Progress bar ── */
+.ob-progress-bar {
+  height: 2px;
+  background: var(--border);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ob-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+  transition: width 0.35s ease;
+  box-shadow: 0 0 8px rgba(232, 135, 10, 0.4);
+}
+
+/* ── Hint ── */
+.ob-hint {
+  padding: 10px 24px 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+/* ── Parts grid (scrollable) ── */
+.ob-grid-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 24px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.ob-parts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.ob-part-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 2px;
+  cursor: default;
+  transition: background 0.1s;
+}
+
+.ob-part-row:hover {
+  background: var(--surface2);
+}
+
+.ob-part-name {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ob-part-freq {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  min-width: 24px;
+  text-align: right;
+}
+
+.ob-part-row input[type=number] {
+  width: 52px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  padding: 3px 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: center;
+  transition: border-color 0.12s, box-shadow 0.12s, color 0.1s;
+  flex-shrink: 0;
+}
+
+.ob-part-row input[type=number]:focus {
+  outline: none;
+  border-color: var(--amber-border);
+  box-shadow: 0 0 0 2px rgba(232, 135, 10, 0.15);
+  color: var(--amber);
+}
+
+.ob-part-row input[type=number]:not([value=""]):not([value="0"]) {
+  border-color: var(--amber-border);
+  color: var(--amber);
+  background: var(--amber-bg);
+}
+
+/* Spinner always visible */
+.ob-part-row input[type=number]::-webkit-inner-spin-button,
+.ob-part-row input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* ── Footer actions ── */
+.ob-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.ob-skip-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.ob-skip-btn:hover {
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.ob-next-btn {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 3px;
+  color: var(--amber-bright);
+  padding: 8px 28px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.15s;
+  box-shadow: 0 0 16px rgba(232, 135, 10, 0.14);
+}
+
+.ob-next-btn:hover {
+  border-color: var(--amber);
+  box-shadow: 0 0 28px rgba(232, 135, 10, 0.28);
+}
+
+.ob-next-btn.is-finish {
+  background: var(--green-bg);
+  border-color: var(--green-border);
+  color: var(--green-bright);
+  box-shadow: 0 0 16px rgba(57, 211, 83, 0.14);
+}
+
+.ob-next-btn.is-finish:hover {
+  border-color: var(--green);
+  box-shadow: 0 0 28px rgba(57, 211, 83, 0.28);
+}
+
+/* ── Mobile ── */
+@media only screen and (max-width: 600px) {
+  .ob-parts-grid {
+    grid-template-columns: 1fr;
+  }
+  .ob-header {
+    flex-wrap: wrap;
+  }
+  .ob-sort-bar {
+    order: 3;
+    width: 100%;
+  }
+}

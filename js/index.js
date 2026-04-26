@@ -253,7 +253,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     var startBtn  = document.getElementById('welcome-start');
     var signinBtn = document.getElementById('welcome-signin');
-    if (startBtn)  { startBtn.onclick  = SC.dismissWelcome; }
+    if (startBtn)  { startBtn.onclick  = SC.onboarding.show; }
     if (signinBtn) {
         signinBtn.onclick = function () {
             SC.dismissWelcome();
@@ -291,6 +291,18 @@ window.addEventListener('DOMContentLoaded', function () {
         syncBanner.onclick = SC.auth.openModal;
         syncBanner.onkeydown = function (e) {
             if (e.key === 'Enter' || e.key === ' ') { SC.auth.openModal(); }
+        };
+    }
+
+    // Sidebar collapse toggle
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+    var sidebar = document.getElementById('sidebar');
+    if (sidebarToggle && sidebar) {
+        var collapsed = localStorage.getItem('SC.sidebar_collapsed') === '1';
+        if (collapsed) { sidebar.classList.add('is-collapsed'); }
+        sidebarToggle.onclick = function () {
+            sidebar.classList.toggle('is-collapsed');
+            localStorage.setItem('SC.sidebar_collapsed', sidebar.classList.contains('is-collapsed') ? '1' : '0');
         };
     }
 
