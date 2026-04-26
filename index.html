@@ -10,28 +10,30 @@
 
     <link rel="shortcut icon" href="image/icon.png" type="image/png" />
 
-    <link rel="stylesheet" href="css/index.css?version=270" type="text/css" />
-    <link rel="stylesheet" href="css/sidebar.css?version=270" type="text/css" />
-    <link rel="stylesheet" href="css/table.css?version=270" type="text/css" />
-    <link rel="stylesheet" href="css/mobile.css?version=270" type="text/css" />
+    <link rel="stylesheet" href="css/index.css?version=271" type="text/css" />
+    <link rel="stylesheet" href="css/sidebar.css?version=271" type="text/css" />
+    <link rel="stylesheet" href="css/table.css?version=271" type="text/css" />
+    <link rel="stylesheet" href="css/mobile.css?version=271" type="text/css" />
 
-    <script type="text/javascript" src="depend/canvas/canvas.src.js?version=270"></script>
+    <script type="text/javascript" src="depend/canvas/canvas.src.js?version=271"></script>
 
-    <script type="text/javascript" src="circuit/circuits.js?version=270"></script>
+    <script type="text/javascript" src="circuit/circuits.js?version=271"></script>
 
-    <script type="text/javascript" src="js/global.js?version=270"></script>
-    <script type="text/javascript" src="js/utils.js?version=270"></script>
-    <script type="text/javascript" src="js/engineering.js?version=270"></script>
-    <script type="text/javascript" src="js/check_new_circuits.js?version=270"></script>
-    <script type="text/javascript" src="js/index.js?version=270"></script>
-    <script type="text/javascript" src="js/render.js?version=270"></script>
-    <script type="text/javascript" src="js/filter.js?version=270"></script>
+    <script type="text/javascript" src="js/global.js?version=271"></script>
+    <script type="text/javascript" src="js/utils.js?version=271"></script>
+    <script type="text/javascript" src="js/engineering.js?version=271"></script>
+    <script type="text/javascript" src="js/check_new_circuits.js?version=271"></script>
+    <script type="text/javascript" src="js/index.js?version=271"></script>
+    <script type="text/javascript" src="js/render.js?version=271"></script>
+    <script type="text/javascript" src="js/filter.js?version=271"></script>
 
   </head>
   <body>
     <nav id="sidebar">
 
-        <h1>What do I have</h1>
+        <div class="sidebar-title">
+            <h1>What do I have</h1>
+        </div>
 
         <h2>Resistors <span id="plus_10_resistor" class="plus10all" title="Increase all resistors by 10, i.e. you don't care about resistors">+10 all</span></h2>
         <section id="type_resistor"></section>
@@ -83,29 +85,34 @@
 
     <main>
 
-        <header>
-            <h1>What can I build <span id="total_count"></span></h1>
-        </header>
-
-        <div>
-            Show circuits
-            <label title="You have all parts (uncheck to see what you need to buy)">
-                <input id="filter_show_possible" type="checkbox" checked><span>possible</span>
-            </label>
-            <label title="Show circuits where you don't have exact part, but you have alternative parts that circuit allows as substitutions">
-                <input id="filter_show_subs" type="checkbox" checked><span>with substitution</span>
-            </label>
-            <label title="Only show circuits you've already built in the table (regardless of their posibility)">
-                <input id="filter_show_done" type="checkbox"><span>done</span>
-            </label>
+        <div class="topbar">
+            <h1>What can I build</h1>
+            <span id="badge_ready" class="badge badge-green">✓ 0 ready</span>
+            <span id="badge_almost" class="badge badge-indigo">✦ 0 almost</span>
+            <span id="total_count" style="display:none"></span>
+            <div class="filters">
+                <label title="Show circuits where you don't have exact part, but you have alternative parts that circuit allows as substitutions">
+                    <input id="filter_show_subs" type="checkbox" checked><span>with substitution</span>
+                </label>
+                <label title="Only show circuits you've already built in the table (regardless of their possibility)">
+                    <input id="filter_show_done" type="checkbox"><span>done</span>
+                </label>
+            </div>
         </div>
 
-        <table class="border">
+        <div class="section-header">
+            <span>✅</span>
+            <h1 class="green">What I Can Build</h1>
+            <span class="section-count" id="count_ready">0 circuits — you have all the parts</span>
+        </div>
+        <div class="section-divider"></div>
+
+        <table>
             <thead>
                 <tr>
                     <th class="sticky">Links</th>
                     <th class="sticky" style="width: 100%">Circuit</th>
-                    <th class="sticky" style="min-width: 10ex;">Parts</th>
+                    <th class="sticky" style="min-width: 8ex;">Parts</th>
                     <th class="sticky">Action</th>
                 </tr>
             </thead>
@@ -113,11 +120,30 @@
             </tbody>
         </table>
 
-        <div id="nothing" style="margin-top: 1ex; display: none; color: gray;">
-        With the parts you have,
-        you cannot build anything, if you want to see what parts are missing,
-        uncheck the "possible" checkbox. Circuits with fewest missing parts will be
-        shown on top and sorted by easiest first.</div>
+        <div class="almost-divider">
+            <div class="section-header">
+                <span>✨</span>
+                <h1 class="indigo">What I Could Build</h1>
+                <span class="section-count" id="count_almost">0 circuits — missing 1–3 parts</span>
+            </div>
+            <div class="section-divider"></div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Links</th>
+                    <th style="width: 100%">Circuit</th>
+                    <th style="min-width: 8ex;">Parts</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="table_almost">
+            </tbody>
+        </table>
+
+        <div id="nothing" style="margin-top: 1ex; display: none;">
+        Nothing to show. Try entering some parts in the sidebar.</div>
 
     </main>
 
