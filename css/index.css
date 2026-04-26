@@ -6,8 +6,8 @@
   --surface2: #0a0f1a;
   --border: #1e2d3d;
   --text: #e2e8f0;
-  --text-muted: #475569;
-  --text-dim: #64748b;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
   --green: #4ade80;
   --green-bg: #052e16;
   --green-border: #166534;
@@ -43,12 +43,13 @@ main {
 
 /* Topbar */
 .topbar {
-  padding: 12px 20px;
+  padding: 10px 20px;
   border-bottom: 1px solid var(--border);
-  background: var(--surface2);
+  background: rgba(10, 15, 26, 0.92);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -56,30 +57,36 @@ main {
 }
 
 .topbar h1 {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
   margin: 0;
   padding: 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .badge {
   font-size: 11px;
-  padding: 2px 10px;
+  padding: 3px 12px;
   border-radius: 999px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: box-shadow 0.2s;
 }
 
 .badge-green {
   background: var(--green-bg);
   color: var(--green);
   border: 1px solid var(--green-border);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.18);
 }
 
 .badge-indigo {
   background: var(--indigo-bg);
   color: var(--indigo);
   border: 1px solid var(--indigo-border);
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.18);
 }
 
 .filters {
@@ -95,12 +102,26 @@ main {
 .filters label {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   cursor: pointer;
   user-select: none;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.filters label:hover {
+  border-color: var(--border);
+  color: var(--text-dim);
 }
 
 .filters label span {
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.filters label:hover span {
   color: var(--text-dim);
 }
 
@@ -111,21 +132,33 @@ main {
 
 /* Section headers */
 .section-header {
-  padding: 18px 20px 10px;
+  padding: 22px 20px 12px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
 }
 
+.section-header > span:first-child {
+  font-size: 15px;
+}
+
 .section-header h1 {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   margin: 0;
   padding: 0;
+  letter-spacing: -0.01em;
 }
 
-.section-header h1.green { color: var(--green); }
-.section-header h1.indigo { color: var(--indigo); }
+.section-header h1.green {
+  color: var(--green);
+  text-shadow: 0 0 24px rgba(74, 222, 128, 0.35);
+}
+
+.section-header h1.indigo {
+  color: var(--indigo);
+  text-shadow: 0 0 24px rgba(129, 140, 248, 0.35);
+}
 
 .section-count {
   font-size: 11px;
@@ -140,9 +173,9 @@ main {
 
 /* Divider between the two main sections */
 .almost-divider {
-  margin-top: 28px;
+  margin-top: 32px;
   border-top: 1px solid var(--border);
-  background: linear-gradient(to bottom, #0d0e1f 0%, transparent 80%);
+  background: linear-gradient(to bottom, #0d0e1f 0%, transparent 100%);
 }
 
 label {

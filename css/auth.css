@@ -1,0 +1,232 @@
+/* Auth widget (topbar) + sign-in modal */
+
+/* ── Topbar auth widget ── */
+.auth-widget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.auth-open-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #1d4ed8;
+  background: rgba(29, 78, 216, 0.1);
+  color: #93c5fd;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+
+.auth-open-btn:hover {
+  background: rgba(29, 78, 216, 0.2);
+  box-shadow: 0 0 12px rgba(147, 197, 253, 0.15);
+}
+
+.auth-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #166534, #1e1b4b);
+  border: 1px solid #1e2d3d;
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.auth-email {
+  font-size: 11px;
+  color: #64748b;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-signout-btn {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid #1e2d3d;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.auth-signout-btn:hover {
+  color: #94a3b8;
+  border-color: #334155;
+}
+
+.sync-indicator {
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.sync-indicator.saving {
+  color: #64748b;
+  opacity: 1;
+}
+
+.sync-indicator.saved {
+  color: #4ade80;
+  opacity: 1;
+}
+
+.sync-indicator.error {
+  color: #f87171;
+  opacity: 1;
+}
+
+/* ── Sign-in modal overlay ── */
+#auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(6, 11, 20, 0.85);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.auth-modal-box {
+  background: #0d1117;
+  border: 1px solid #1e2d3d;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #475569;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+  font-family: inherit;
+}
+
+.auth-modal-close:hover {
+  color: #94a3b8;
+}
+
+.auth-modal-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.auth-modal-box h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.auth-modal-box p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+#auth-email-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #060b14;
+  border: 1px solid #1e2d3d;
+  border-radius: 8px;
+  color: #e2e8f0;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#auth-email-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+#auth-email-input::placeholder {
+  color: #334155;
+}
+
+#auth-modal-send {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #166534;
+  background: linear-gradient(135deg, #052e16, #14532d);
+  color: #4ade80;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.15);
+}
+
+#auth-modal-send:hover:not(:disabled) {
+  box-shadow: 0 0 24px rgba(74, 222, 128, 0.28);
+}
+
+#auth-modal-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-status {
+  font-size: 12px;
+  margin-top: 12px;
+  min-height: 18px;
+  line-height: 1.4;
+}
+
+.auth-status.success {
+  color: #4ade80;
+}
+
+.auth-status.error {
+  color: #f87171;
+}
+
+.auth-note {
+  font-size: 11px !important;
+  color: #334155 !important;
+  margin-top: 20px !important;
+  margin-bottom: 0 !important;
+  text-align: center;
+}

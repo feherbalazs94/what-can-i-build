@@ -33,19 +33,16 @@ SC.refresh = function () {
             return;
         }
         if (a.errors.length === 0) {
-            // Section 1: all parts present
             tr = SC.renderOne(a.key, a.circuit, a.errors, a.warnings);
             SC.e.table_ok.appendChild(tr);
             can++;
         } else if (a.errors.length <= 3) {
-            // Section 2: missing 1–3 parts
             tr = SC.renderAlmost(a.key, a.circuit, a.errors, a.warnings);
             SC.e.table_almost.appendChild(tr);
             almost++;
         }
     });
 
-    // Update badges and section counts
     SC.e.badge_ready.textContent = '✓ ' + can + ' ready';
     SC.e.badge_almost.textContent = '✦ ' + almost + ' almost';
     SC.e.count_ready.textContent = can + ' circuits — you have all the parts';
@@ -55,7 +52,6 @@ SC.refresh = function () {
 };
 
 SC.onUpdateCount = function (event) {
-    // Save user's updated parts count in sidebar
     var type = event.target.dataType,
         value = event.target.dataValue,
         count = event.target.value;
@@ -63,22 +59,21 @@ SC.onUpdateCount = function (event) {
     SC.counts[type][value] = parseInt(count, 10);
     SC.refresh();
     CA.storage.writeObject('SC.counts', SC.counts);
+    // Sync to cloud if signed in; show banner if not
+    SC.sync.schedule();
+    SC.sync.updateBanner();
 };
 
 SC.createLabelInput = function (aType, aValue) {
-    // Create one label+input for odd one part type and value
     var label, span, input;
-    // label
     label = document.createElement('label');
     label.className = 'type_' + aType + '_' + aValue;
-    // span
     span = document.createElement('span');
     span.textContent = aValue.toString().replace('DARLINGTON', 'DARL');
     if (span.textContent.length > 8) {
         span.style.fontSize = 'x-small';
     }
     label.appendChild(span);
-    // input
     input = document.createElement('input');
     input.type = 'number';
     input.min = 0;
@@ -90,33 +85,23 @@ SC.createLabelInput = function (aType, aValue) {
     input.addEventListener('input', SC.onUpdateCount);
     input.value = (SC.counts[aType] && SC.counts[aType][aValue]) || '';
     label.appendChild(input);
-    return {
-        label: label,
-        span: span,
-        input: input
-    };
+    return { label: label, span: span, input: input };
 };
 
 SC.showParts = function () {
-    // Show parts and user counts for all circuits
     var k, c, n, t, v, a, val, use_eng, sec, i;
-    // all circuits
     for (k in SC.circuit) {
         if (SC.circuit.hasOwnProperty(k)) {
             c = SC.circuit[k];
-            // all parts
             for (n in c.parts) {
                 if (c.parts.hasOwnProperty(n)) {
                     t = SC.nameToType(n, k);
                     if (!SC.e['type_' + t]) {
                         alert('Type ' + t + ' has no section');
                     }
-                    // all values
                     val = Array.isArray(c.parts[n]) ? c.parts[n] : [c.parts[n]];
                     for (v = 0; v < val.length; v++) {
-                        if (!SC.values[t]) {
-                            SC.values[t] = {};
-                        }
+                        if (!SC.values[t]) { SC.values[t] = {}; }
                         if (!SC.values[t][val[v]]) {
                             SC.values[t][val[v]] = SC.createLabelInput(t, val[v]);
                         }
@@ -126,43 +111,30 @@ SC.showParts = function () {
         }
     }
     function value_compare(x, y) {
-        // sorting function
-        if (x.value === y.value) {
-            return 0;
-        }
+        if (x.value === y.value) { return 0; }
         return x.value < y.value ? -1 : 1;
     }
-    // short inputs by value and add them to correct section
     for (t in SC.values) {
         if (SC.values.hasOwnProperty(t)) {
             a = [];
             use_eng = t === 'capacitor' || t === 'resistor' || t === 'pot' || t === 'pot_trimmer';
             for (v in SC.values[t]) {
                 if (SC.values[t].hasOwnProperty(v)) {
-                    // convert engineering values 4k7 to 4700
                     val = v;
-                    if (use_eng) {
-                        val = SC.fromEng(v.replace(' Stereo', ''));
-                    }
-                    a.push({v: v, value: val, li: SC.values[t][v]});
+                    if (use_eng) { val = SC.fromEng(v.replace(' Stereo', '')); }
+                    a.push({ v: v, value: val, li: SC.values[t][v] });
                 }
             }
-            // add them to sections
             sec = SC.e['type_' + t];
             a = a.sort(value_compare);
-            for (i = 0; i < a.length; i++) {
-                sec.appendChild(a[i].li.label);
-            }
+            for (i = 0; i < a.length; i++) { sec.appendChild(a[i].li.label); }
         }
     }
 };
 
 SC.plusTenAll = function (event) {
-    // Increase all in the next section by 10
     var v, t = event.target.parentElement.nextElementSibling.id.replace('type_', '');
-    if (!confirm('Increase all ' + t + ' counts by 10?')) {
-        return;
-    }
+    if (!confirm('Increase all ' + t + ' counts by 10?')) { return; }
     for (v in SC.values[t]) {
         if (SC.values[t].hasOwnProperty(v)) {
             SC.counts[t] = SC.counts[t] || {};
@@ -173,10 +145,11 @@ SC.plusTenAll = function (event) {
     }
     CA.storage.writeObject('SC.counts', SC.counts);
     SC.refresh();
+    SC.sync.schedule();
+    SC.sync.updateBanner();
 };
 
 SC.exact = function (aPartsCounts) {
-    // Find exact parts counts, e.g. {P:3, S:1} will find anything with 3 pots and 1 switch
     var k, c = {}, j, ok, z, ret = [], url;
     for (k in SC.circuit) {
         if (SC.circuit.hasOwnProperty(k)) {
@@ -191,9 +164,7 @@ SC.exact = function (aPartsCounts) {
             ok = true;
             for (j in aPartsCounts) {
                 if (aPartsCounts.hasOwnProperty(j)) {
-                    if (c[j] !== aPartsCounts[j]) {
-                        ok = false;
-                    }
+                    if (c[j] !== aPartsCounts[j]) { ok = false; }
                 }
             }
             if (ok) {
@@ -201,10 +172,7 @@ SC.exact = function (aPartsCounts) {
                 url = '';
                 for (j in SC.circuit[k].url) {
                     if (SC.circuit[k].url.hasOwnProperty(j)) {
-                        if (SC.circuit[k].url[j] !== '') {
-                            url = SC.circuit[k].url[j];
-                            break;
-                        }
+                        if (SC.circuit[k].url[j] !== '') { url = SC.circuit[k].url[j]; break; }
                     }
                 }
                 ret.push('- [' + k + '](' + url + ')');
@@ -214,18 +182,93 @@ SC.exact = function (aPartsCounts) {
     console.log(ret.join('\n'));
 };
 
+// ── Welcome screen ────────────────────────────────────────────────────────────
+
+SC.dismissWelcome = function () {
+    var el = document.getElementById('welcome-screen');
+    if (!el) { return; }
+    el.classList.add('hiding');
+    setTimeout(function () { el.style.display = 'none'; }, 380);
+    localStorage.setItem('SC.welcome_dismissed', '1');
+};
+
+SC.showWelcomeIfNeeded = function () {
+    var dismissed = localStorage.getItem('SC.welcome_dismissed') === '1';
+    if (dismissed || SC.sync.hasAnyParts()) {
+        var el = document.getElementById('welcome-screen');
+        if (el) { el.style.display = 'none'; }
+    }
+};
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+
 window.addEventListener('DOMContentLoaded', function () {
     SC.e = CA.elementsWithId();
+
+    // Filter checkboxes
     SC.e.filter_show_subs.onclick = SC.refresh;
     SC.e.filter_show_done.onclick = SC.refresh;
-    SC.e.plus_10_resistor.onclick = SC.plusTenAll;
-    SC.e.plus_10_capacitor.onclick = SC.plusTenAll;
-    SC.e.plus_10_pot.onclick = SC.plusTenAll;
+
+    // +10 all buttons
+    SC.e.plus_10_resistor.onclick    = SC.plusTenAll;
+    SC.e.plus_10_capacitor.onclick   = SC.plusTenAll;
+    SC.e.plus_10_pot.onclick         = SC.plusTenAll;
     SC.e.plus_10_pot_trimmer.onclick = SC.plusTenAll;
-    SC.e.plus_10_diode.onclick = SC.plusTenAll;
-    SC.e.plus_10_switch.onclick = SC.plusTenAll;
+    SC.e.plus_10_diode.onclick       = SC.plusTenAll;
+    SC.e.plus_10_switch.onclick      = SC.plusTenAll;
+
+    // Populate sidebar inputs and run first filter pass
     SC.showParts();
     SC.refresh();
     SC.checkNewCircuits();
-});
 
+    // Welcome screen
+    SC.showWelcomeIfNeeded();
+
+    var startBtn  = document.getElementById('welcome-start');
+    var signinBtn = document.getElementById('welcome-signin');
+    if (startBtn)  { startBtn.onclick  = SC.dismissWelcome; }
+    if (signinBtn) {
+        signinBtn.onclick = function () {
+            SC.dismissWelcome();
+            SC.auth.openModal();
+        };
+    }
+
+    // Auth modal
+    var closeBtn = document.getElementById('auth-modal-close');
+    var sendBtn  = document.getElementById('auth-modal-send');
+    var modal    = document.getElementById('auth-modal');
+    if (closeBtn) { closeBtn.onclick = SC.auth.closeModal; }
+    if (sendBtn)  { sendBtn.onclick  = SC.auth.handleModalSubmit; }
+    if (modal) {
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) { SC.auth.closeModal(); }
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                SC.auth.closeModal();
+            }
+        });
+        // Submit on Enter key in email field
+        var emailInput = document.getElementById('auth-email-input');
+        if (emailInput) {
+            emailInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { SC.auth.handleModalSubmit(); }
+            });
+        }
+    }
+
+    // Sync banner → open modal
+    var syncBanner = document.getElementById('sync-banner');
+    if (syncBanner) {
+        syncBanner.onclick = SC.auth.openModal;
+        syncBanner.onkeydown = function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { SC.auth.openModal(); }
+        };
+    }
+
+    // Init Supabase auth (no-op if not configured)
+    SC.auth.init();
+    SC.auth.updateWidget();
+});

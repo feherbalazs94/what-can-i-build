@@ -18,9 +18,9 @@ td {
 th {
   padding: 7px 8px 7px 20px;
   text-align: left;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   color: var(--text-muted);
   font-weight: 600;
   border-bottom: 1px solid var(--border);
@@ -34,13 +34,13 @@ th:last-child {
 
 th.sticky {
   position: sticky;
-  top: 49px;
+  top: 41px;
   z-index: 5;
 }
 
 table td {
-  padding: 10px 8px 10px 20px;
-  border-bottom: 1px solid #111a28;
+  padding: 11px 8px 11px 20px;
+  border-bottom: 1px solid #0f1a26;
 }
 
 table td:last-child {
@@ -51,9 +51,17 @@ table td.full {
   width: 100%;
 }
 
-/* Row hover */
+/* Row hover with left accent */
+table tr {
+  transition: background 0.12s;
+}
+
 table tr:hover td {
-  background: #0e1724;
+  background: #0d1622;
+}
+
+table tr:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--green-border);
 }
 
 /* Circuit name + author */
@@ -89,20 +97,21 @@ table .error {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  min-width: 36px;
+  min-width: 40px;
 }
 
 td a {
   display: inline-flex;
   align-items: center;
   font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: #131c27;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #101b28;
   border: 1px solid var(--border);
   color: var(--text-dim);
   text-decoration: none;
   white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 td a[href]:not([href=""]):hover {
@@ -145,7 +154,7 @@ table td.nowrap {
 /* ─── "Almost" section: missing parts chips ─── */
 
 .missing-parts {
-  margin-top: 5px;
+  margin-top: 6px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -153,14 +162,20 @@ table td.nowrap {
 
 .missing-chip {
   font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 2px 9px;
+  border-radius: 5px;
   background: var(--red-chip-bg);
   border: 1px solid var(--red-chip-border);
   color: var(--red-chip-text);
+  letter-spacing: 0.01em;
 }
 
 .missing-chip::before {
   content: '− ';
   font-weight: 700;
+}
+
+/* Hide table headers when the body has no rows */
+table:has(tbody:empty) thead {
+  display: none;
 }

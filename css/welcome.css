@@ -1,0 +1,303 @@
+/* Welcome / onboarding screen */
+
+#welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #060b14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+#welcome-screen.hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Noise texture overlay ── */
+#welcome-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ── Glow blobs ── */
+#welcome-screen::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(74, 222, 128, 0.06) 0%,
+    rgba(129, 140, 248, 0.04) 50%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  pointer-events: none;
+}
+
+.welcome-card {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Logo mark ── */
+.welcome-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #052e16 0%, #1e1b4b 100%);
+  border: 1px solid #1e2d3d;
+  font-size: 26px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 32px rgba(74, 222, 128, 0.15), 0 0 64px rgba(129, 140, 248, 0.08);
+}
+
+/* ── Headline ── */
+.welcome-card h1 {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 14px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-card h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #4ade80 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-card p.tagline {
+  font-size: 15px;
+  color: #64748b;
+  margin: 0 0 40px;
+  line-height: 1.6;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Steps ── */
+.welcome-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.welcome-step {
+  background: #0d1117;
+  border: 1px solid #1e2d3d;
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.welcome-step::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.03), transparent);
+  pointer-events: none;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 0;
+}
+
+.welcome-step:nth-child(1) .step-num {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.25);
+}
+
+.welcome-step:nth-child(2) .step-num {
+  background: rgba(147, 197, 253, 0.10);
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+}
+
+.welcome-step:nth-child(3) .step-num {
+  background: rgba(129, 140, 248, 0.10);
+  color: #818cf8;
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+.step-icon {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.step-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 4px;
+}
+
+.step-desc {
+  display: block;
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* ── Actions ── */
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.welcome-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #166534 0%, #14532d 100%);
+  color: #4ade80;
+  border: 1px solid #166534;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+  transition: box-shadow 0.2s, transform 0.15s;
+  font-family: inherit;
+  width: 100%;
+  justify-content: center;
+}
+
+.welcome-btn-primary:hover {
+  box-shadow: 0 0 32px rgba(74, 222, 128, 0.35);
+  transform: translateY(-1px);
+}
+
+.welcome-btn-primary:active {
+  transform: translateY(0);
+}
+
+.welcome-btn-secondary {
+  background: none;
+  border: none;
+  color: #4a5568;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+
+.welcome-btn-secondary:hover {
+  color: #94a3b8;
+}
+
+.welcome-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  color: #1e2d3d;
+  font-size: 11px;
+}
+
+.welcome-divider::before,
+.welcome-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #1e2d3d;
+}
+
+/* ── Save banner in sidebar ── */
+#sync-banner {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 14px;
+  padding: 9px 12px;
+  background: #0c1e35;
+  border: 1px solid #1d4ed8;
+  border-radius: 8px;
+  font-size: 11px;
+  color: #93c5fd;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#sync-banner:hover {
+  background: #0f2644;
+}
+
+#sync-banner .banner-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+#sync-banner .banner-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+#sync-banner .banner-text strong {
+  display: block;
+  color: #bfdbfe;
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+#sync-banner .banner-arrow {
+  color: #3b82f6;
+  font-size: 12px;
+}
+
+@media only screen and (max-width: 700px) {
+  .welcome-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-card h1 {
+    font-size: 28px;
+  }
+}
