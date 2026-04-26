@@ -57,6 +57,37 @@
   margin: 0;
 }
 
+/* ── Guided setup relaunch button ── */
+.sidebar-onboarding-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: calc(100% - 24px);
+  margin: 10px 12px 4px;
+  padding: 7px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.sidebar-onboarding-btn:hover {
+  color: var(--amber);
+  border-color: var(--amber-border);
+  background: var(--amber-bg);
+}
+
+#sidebar.is-collapsed .sidebar-onboarding-btn {
+  display: none;
+}
+
 /* ── Accordion sections ── */
 .sb-section {
   border-bottom: 1px solid var(--border);

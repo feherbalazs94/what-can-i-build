@@ -31,7 +31,7 @@ SC.onboarding = (function () {
 
     var steps = [];
     var currentStep = 0;
-    var sortMode = 'freq';
+    var sortMode = 'alpha';
     var freq = null;
     var overlay = null;
 
@@ -100,6 +100,11 @@ SC.onboarding = (function () {
         overlay.querySelectorAll('.ob-sort-btn').forEach(function (btn) {
             btn.classList.toggle('active', btn.getAttribute('data-sort') === sortMode);
         });
+
+        var sortLabel = overlay.querySelector('.ob-sort-active-label');
+        if (sortLabel) {
+            sortLabel.textContent = sortMode === 'alpha' ? 'A → Z' : 'most used first';
+        }
 
         var grid = overlay.querySelector('.ob-parts-grid');
         grid.innerHTML = '';
@@ -179,7 +184,7 @@ SC.onboarding = (function () {
         freq = computeFreq();
         steps = getActiveSteps();
         currentStep = 0;
-        sortMode = 'freq';
+        sortMode = 'alpha';
 
         if (!steps.length) { finish(); return; }
 

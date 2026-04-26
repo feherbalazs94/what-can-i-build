@@ -106,8 +106,18 @@
 /* ── Sort buttons ── */
 .ob-sort-bar {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 5px;
   flex-shrink: 0;
+}
+
+.ob-sort-heading {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 2px;
 }
 
 .ob-sort-btn {
@@ -154,14 +164,63 @@
   box-shadow: 0 0 8px rgba(232, 135, 10, 0.4);
 }
 
-/* ── Hint ── */
-.ob-hint {
-  padding: 10px 24px 6px;
+/* ── Tip callout ── */
+.ob-tip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 14px 24px 0;
+  padding: 13px 16px;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.ob-tip-bolt {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--amber);
+  flex-shrink: 0;
+  text-shadow: 0 0 10px rgba(232, 135, 10, 0.5);
+}
+
+.ob-tip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ob-tip-headline {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  line-height: 1;
+}
+
+.ob-tip-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--amber-dim);
+  letter-spacing: 0.03em;
+  color: rgba(232, 135, 10, 0.55);
+}
+
+/* ── Active sort label ── */
+.ob-sort-info {
+  padding: 8px 24px 2px;
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-muted);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   flex-shrink: 0;
+}
+
+.ob-sort-active-label {
+  color: var(--text-dim);
 }
 
 /* ── Parts grid (scrollable) ── */

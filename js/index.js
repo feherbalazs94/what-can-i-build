@@ -294,6 +294,10 @@ window.addEventListener('DOMContentLoaded', function () {
         };
     }
 
+    // Guided setup relaunch from sidebar
+    var onboardingBtn = document.getElementById('onboarding-btn');
+    if (onboardingBtn) { onboardingBtn.onclick = SC.onboarding.show; }
+
     // Sidebar collapse toggle
     var sidebarToggle = document.getElementById('sidebar-toggle');
     var sidebar = document.getElementById('sidebar');

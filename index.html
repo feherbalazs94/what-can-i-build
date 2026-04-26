@@ -113,6 +113,9 @@
             <button id="sidebar-toggle" title="Collapse sidebar"><span class="toggle-arrow">‹</span></button>
         </div>
 
+        <!-- Guided setup relaunch -->
+        <button id="onboarding-btn" class="sidebar-onboarding-btn">◈ Guided Setup</button>
+
         <!-- Save-to-account banner (shown when user has parts but isn't signed in) -->
         <div id="sync-banner" role="button" tabindex="0">
           <span class="banner-icon">☁️</span>
@@ -380,12 +383,20 @@
             <span class="ob-step-num">1 / 8</span>
           </div>
           <div class="ob-sort-bar">
-            <button class="ob-sort-btn active" data-sort="freq">By use</button>
-            <button class="ob-sort-btn" data-sort="alpha">Alpha</button>
+            <span class="ob-sort-heading">Sort:</span>
+            <button class="ob-sort-btn active" data-sort="alpha">Alpha</button>
+            <button class="ob-sort-btn" data-sort="freq">By use</button>
           </div>
         </div>
         <div class="ob-progress-bar"><div class="ob-progress-fill" style="width:0%"></div></div>
-        <div class="ob-hint">Enter how many of each value you have in your parts bin.</div>
+        <div class="ob-tip">
+          <span class="ob-tip-bolt">→</span>
+          <div class="ob-tip-body">
+            <span class="ob-tip-headline">Start with 10 of each</span>
+            <span class="ob-tip-sub">Enter 10 for everything you own — you can fine-tune later</span>
+          </div>
+        </div>
+        <div class="ob-sort-info">Currently sorted: <span class="ob-sort-active-label">A → Z</span></div>
         <div class="ob-grid-wrap">
           <div class="ob-parts-grid"></div>
         </div>
