@@ -1,68 +1,126 @@
-/* gray sidebar */
+/* dark sidebar */
 
 #sidebar {
-    height: 100%;
-    overflow-y: scroll;
-    box-sizing: border-box;
-    background-color: silver;
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-    padding: 0.5ex;
-    _box-shadow: 0 0 1ex;
-    font-size: small;
-    user-select: none;
-    width: 320px;
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  font-size: 12px;
+  user-select: none;
+  width: 240px;
+  padding-bottom: 16px;
 }
 
-#sidebar h1 {
-    text-align: center;
+.sidebar-title {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 1;
 }
-#sidebar h1, h2 {
-    margin: 0;
-    padding: 0;
-    padding-top: 0.5ex;
-    font-size: small;
+
+.sidebar-title h1 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
-#sidebar label {
-    outline: 1px solid red;
+
+#sidebar h2 {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #334155;
+  margin: 12px 0 6px;
+  padding: 0 14px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-#sidebar input[type=number] {
-    max-width: 7ex;
-}
+
 #sidebar section {
-    column-count: 2;
-    column-gap: 0;
+  padding: 0 14px;
+  column-count: 2;
+  column-gap: 4px;
 }
 
 #sidebar section label {
-    outline: 0px solid red;
-    display: flex;
-    max-width: 4cm;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+  break-inside: avoid;
+  outline: none;
 }
+
 #sidebar section label > span {
-    flex: 1;
-    text-align: right;
-    padding-right: 0.5ex;
+  flex: 1;
+  color: var(--text-muted);
+  font-size: 11px;
+  text-align: right;
+  padding-right: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#sidebar input[type=number] {
+  width: 44px;
+  background: #131c27;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  padding: 2px 4px;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Make number input arrows always visible */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.plus10all {
+  color: #334155;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  float: none;
+}
+
+.plus10all:hover {
+  color: var(--blue);
 }
 
 #sidebar .bottom {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 1ex;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
-/* make number input arrows always visible */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    opacity: 1;
+#sidebar .bottom a {
+  color: #334155;
+  font-size: 11px;
+  text-decoration: none;
 }
 
-#plus_10_resistor, #plus_10_capacitor, .plus10all {
-    float: right;
-    color: blue;
-    cursor: pointer;
+#sidebar .bottom a:hover {
+  color: var(--text-muted);
 }
-

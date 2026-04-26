@@ -1,37 +1,155 @@
 /* style for index.html */
 
+:root {
+  --bg: #060b14;
+  --surface: #0d1117;
+  --surface2: #0a0f1a;
+  --border: #1e2d3d;
+  --text: #e2e8f0;
+  --text-muted: #475569;
+  --text-dim: #64748b;
+  --green: #4ade80;
+  --green-bg: #052e16;
+  --green-border: #166534;
+  --indigo: #818cf8;
+  --indigo-bg: #1e1b4b;
+  --indigo-border: #3730a3;
+  --blue: #93c5fd;
+  --blue-bg: #0c1e35;
+  --blue-border: #1d4ed8;
+  --red-chip-bg: #1c0f0f;
+  --red-chip-border: #7f1d1d;
+  --red-chip-text: #f87171;
+}
+
 body {
-    margin: 0;
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    box-sizing: border-box;
-    font-family: sans-serif;
-    font-size: medium;
+  margin: 0;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
 }
 
 main {
-    box-sizing: border-box;
-    padding: 1ex;
-    flex: 1;
-    overflow-y: scroll;
-    max-height: 100vh;
+  box-sizing: border-box;
+  flex: 1;
+  overflow-y: scroll;
+  max-height: 100vh;
 }
 
-main h1 {
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    font-size: medium;
+/* Topbar */
+.topbar {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.topbar h1 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.badge-green {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+
+.badge-indigo {
+  background: var(--indigo-bg);
+  color: var(--indigo);
+  border: 1px solid var(--indigo-border);
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filters label span {
+  color: var(--text-dim);
+}
+
+.filters label input[type=checkbox] {
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+/* Section headers */
+.section-header {
+  padding: 18px 20px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-header h1 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.section-header h1.green { color: var(--green); }
+.section-header h1.indigo { color: var(--indigo); }
+
+.section-count {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.section-divider {
+  margin: 0 20px;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Divider between the two main sections */
+.almost-divider {
+  margin-top: 28px;
+  border-top: 1px solid var(--border);
+  background: linear-gradient(to bottom, #0d0e1f 0%, transparent 80%);
 }
 
 label {
-    user-select: none;
-}
-main label {
-    cursor: pointer;
-}
-main label input[type=checkbox], label span {
-    vertical-align: middle;
+  user-select: none;
 }
 
+#nothing {
+  padding: 20px;
+  color: var(--text-muted);
+}

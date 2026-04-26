@@ -4,17 +4,25 @@
 
 var SC = window.SC || {};
 
-SC.renderUrl = function (aTd, aIcon, aUrl) {
-    // Render one url link with text
+SC.URL_LABELS = {
+    schematic: 'sch',
+    stripboard: 'strip',
+    perfboard: 'perf',
+    pcb: 'pcb',
+    tagboard: 'tag',
+    pedal: 'pedal'
+};
+
+SC.renderUrl = function (aContainer, aIcon, aUrl) {
+    // Render one url link pill inside aContainer
     if (!aUrl) {
         return;
     }
     var a = document.createElement('a');
     a.href = aUrl;
-    a.textContent = aIcon;
+    a.textContent = SC.URL_LABELS[aIcon] || aIcon;
     a.target = '_blank';
-    a.style.display = 'block';
-    aTd.appendChild(a);
+    aContainer.appendChild(a);
 };
 
 SC.complexity = function (aCircuit) {
@@ -44,51 +52,115 @@ SC.complexity = function (aCircuit) {
 };
 
 SC.renderOne = function (unused, aCircuit, aErrors, aWarnings) {
-    // Render one circuit and it's errors or warnings
-    var tr, td, e, w, done, k, a, b, span, lc;
+    // Render one circuit row for the "can build" section
+    var tr, td, linksDiv, w, k, b, span, lc;
     tr = document.createElement('tr');
     // links
     td = document.createElement('td');
+    linksDiv = document.createElement('div');
+    linksDiv.className = 'links';
     for (k in aCircuit.url) {
         if (aCircuit.url.hasOwnProperty(k)) {
-            //console.log(td, k, aCircuit.url[k]);
-            SC.renderUrl(td, k, aCircuit.url[k]);
+            SC.renderUrl(linksDiv, k, aCircuit.url[k]);
         }
     }
+    td.appendChild(linksDiv);
     tr.appendChild(td);
-    // name
+    // name + author
     td = document.createElement('td');
-    tr.appendChild(td);
     td.className = 'full';
     b = document.createElement('b');
+    b.className = 'circuit-name';
     b.textContent = aCircuit.name;
     td.appendChild(b);
-    // author
     if (aCircuit.author) {
-        span = document.createElement('span');
-        span.textContent = ' by ';
+        span = document.createElement('div');
+        span.className = 'circuit-author';
+        span.textContent = 'by ' + aCircuit.author;
         td.appendChild(span);
-        b = document.createElement('b');
-        b.textContent = aCircuit.author;
-        td.appendChild(b);
     }
-    // errors
-    if (aErrors.length > 0) {
-        e = document.createElement('div');
-        e.className = 'error';
-        e.textContent = 'Missing(' + aErrors.length + '): ' + aErrors.join(', ');
-        td.appendChild(e);
-    }
-    // warnings
+    // warnings (substitutions)
     if (aWarnings.length > 0) {
         w = document.createElement('div');
         w.className = 'warning';
         w.textContent = aWarnings.join(', ');
-        w.title = "Substitutions";
+        w.title = 'Substitutions';
         td.appendChild(w);
     }
+    tr.appendChild(td);
     // complexity
     td = document.createElement('td');
+    td.className = 'complexity';
+    b = document.createElement('b');
+    b.textContent = Object.keys(aCircuit.parts).length + ': ';
+    td.appendChild(b);
+    td.appendChild(document.createTextNode(SC.complexity(aCircuit)));
+    tr.appendChild(td);
+    // actions
+    td = document.createElement('td');
+    lc = CA.labelCheckbox(td, 'done', SC.done[aCircuit.key]);
+    lc.checkbox.onclick = function () {
+        if (lc.checkbox.checked) {
+            SC.done[aCircuit.key] = 1;
+        } else {
+            delete SC.done[aCircuit.key];
+        }
+        CA.storage.writeObject('SC.done', SC.done);
+    };
+    tr.appendChild(td);
+    return tr;
+};
+
+SC.renderAlmost = function (unused, aCircuit, aErrors, aWarnings) {
+    // Render one circuit row for the "almost" section — shows missing part chips
+    var tr, td, linksDiv, missingDiv, chip, w, k, b, span, lc, i;
+    tr = document.createElement('tr');
+    // links
+    td = document.createElement('td');
+    linksDiv = document.createElement('div');
+    linksDiv.className = 'links';
+    for (k in aCircuit.url) {
+        if (aCircuit.url.hasOwnProperty(k)) {
+            SC.renderUrl(linksDiv, k, aCircuit.url[k]);
+        }
+    }
+    td.appendChild(linksDiv);
+    tr.appendChild(td);
+    // name + author + missing chips
+    td = document.createElement('td');
+    td.className = 'full';
+    b = document.createElement('b');
+    b.className = 'circuit-name';
+    b.textContent = aCircuit.name;
+    td.appendChild(b);
+    if (aCircuit.author) {
+        span = document.createElement('div');
+        span.className = 'circuit-author';
+        span.textContent = 'by ' + aCircuit.author;
+        td.appendChild(span);
+    }
+    // missing parts chips
+    missingDiv = document.createElement('div');
+    missingDiv.className = 'missing-parts';
+    for (i = 0; i < aErrors.length; i++) {
+        chip = document.createElement('span');
+        chip.className = 'missing-chip';
+        chip.textContent = aErrors[i];
+        missingDiv.appendChild(chip);
+    }
+    td.appendChild(missingDiv);
+    // warnings (substitutions)
+    if (aWarnings.length > 0) {
+        w = document.createElement('div');
+        w.className = 'warning';
+        w.textContent = aWarnings.join(', ');
+        w.title = 'Substitutions';
+        td.appendChild(w);
+    }
+    tr.appendChild(td);
+    // complexity
+    td = document.createElement('td');
+    td.className = 'complexity';
     b = document.createElement('b');
     b.textContent = Object.keys(aCircuit.parts).length + ': ';
     td.appendChild(b);

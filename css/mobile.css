@@ -1,19 +1,38 @@
 /* tweaks for mobile phones */
 
 @media only screen and (max-width: 700px) {
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-    #sidebar {
-        width: 100vw !important;
-        max-height: 50vh;
-    }
-    main {
-        font-size: x-small;
-        margin: 0;
-        padding: 0;
-    }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  #sidebar {
+    width: 100vw !important;
+    max-height: 50vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  main {
+    font-size: 12px;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .topbar {
+    position: relative;
+    top: auto;
+  }
+
+  th.sticky {
+    position: relative;
+    top: auto;
+  }
+
+  .filters {
+    margin-left: 0;
+    width: 100%;
+  }
 }
-
-

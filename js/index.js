@@ -5,21 +5,18 @@
 var SC = window.SC || {};
 
 SC.refresh = function () {
-    // Refresh view of possible circuits after counts update or checkbox change
+    // Refresh both sections after counts update or checkbox change
     var f = SC.filter(SC.circuit, SC.counts),
-        opa,
         can = 0,
-        rows = 0,
-        total = Object.keys(SC.circuit).length;
+        almost = 0,
+        total = Object.keys(SC.circuit).length,
+        tr;
 
     SC.e.table_ok.textContent = '';
-
-    opa = SC.e.filter_show_done.checked ? 0.5 : 1;
-    SC.e.filter_show_possible.parentElement.style.opacity = opa;
-    SC.e.filter_show_subs.parentElement.style.opacity = opa;
+    SC.e.table_almost.textContent = '';
 
     f.forEach(function (a) {
-        var tr;
+        // Done filter: show only completed circuits in section 1
         if (SC.e.filter_show_done.checked) {
             if (SC.done[a.key]) {
                 tr = SC.renderOne(a.key, a.circuit, a.errors, a.warnings);
@@ -27,32 +24,34 @@ SC.refresh = function () {
             }
             return;
         }
+        // Skip circuits the user has already marked done
         if (SC.done[a.key]) {
             return;
         }
-        if (SC.e.filter_show_possible.checked && a.errors.length > 0) {
-            return;
-        }
-        if (!SC.e.filter_show_possible.checked && a.errors.length <= 0) {
-            return;
-        }
+        // Skip rows that require substitutions if filter is off
         if (!SC.e.filter_show_subs.checked && a.warnings.length > 0) {
             return;
         }
-        tr = SC.renderOne(a.key, a.circuit, a.errors, a.warnings);
-        rows++;
-        SC.e.table_ok.appendChild(tr);
-        // count possible to build circuits
         if (a.errors.length === 0) {
-            if (!SC.done[a.key]) {
-                can++;
-            }
+            // Section 1: all parts present
+            tr = SC.renderOne(a.key, a.circuit, a.errors, a.warnings);
+            SC.e.table_ok.appendChild(tr);
+            can++;
+        } else if (a.errors.length <= 3) {
+            // Section 2: missing 1–3 parts
+            tr = SC.renderAlmost(a.key, a.circuit, a.errors, a.warnings);
+            SC.e.table_almost.appendChild(tr);
+            almost++;
         }
     });
+
+    // Update badges and section counts
+    SC.e.badge_ready.textContent = '✓ ' + can + ' ready';
+    SC.e.badge_almost.textContent = '✦ ' + almost + ' almost';
+    SC.e.count_ready.textContent = can + ' circuits — you have all the parts';
+    SC.e.count_almost.textContent = almost + ' circuits — missing 1–3 parts';
     SC.e.total_count.textContent = '(' + can + '/' + total + ')';
-    SC.e.total_count.title = 'You can build ' + can + ' of total ' + total + ' circuits';
-    SC.e.nothing.style.display = (rows <= 0 && !SC.e.filter_show_done.checked) ? 'block' : 'none';
-    //SC.lastFilter = f;
+    SC.e.nothing.style.display = (can <= 0 && almost <= 0 && !SC.e.filter_show_done.checked) ? 'block' : 'none';
 };
 
 SC.onUpdateCount = function (event) {
@@ -217,7 +216,6 @@ SC.exact = function (aPartsCounts) {
 
 window.addEventListener('DOMContentLoaded', function () {
     SC.e = CA.elementsWithId();
-    SC.e.filter_show_possible.onclick = SC.refresh;
     SC.e.filter_show_subs.onclick = SC.refresh;
     SC.e.filter_show_done.onclick = SC.refresh;
     SC.e.plus_10_resistor.onclick = SC.plusTenAll;
