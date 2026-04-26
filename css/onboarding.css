@@ -164,7 +164,7 @@
   box-shadow: 0 0 8px rgba(232, 135, 10, 0.4);
 }
 
-/* ── Tip callout ── */
+/* ── Tip callout (clickable button) ── */
 .ob-tip {
   display: flex;
   align-items: center;
@@ -175,6 +175,20 @@
   border: 1px solid var(--amber-border);
   border-radius: 3px;
   flex-shrink: 0;
+  cursor: pointer;
+  text-align: left;
+  width: calc(100% - 48px);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+
+.ob-tip:hover {
+  border-color: var(--amber);
+  box-shadow: 0 0 20px rgba(232, 135, 10, 0.2);
+}
+
+.ob-tip:active {
+  transform: translateY(1px);
 }
 
 .ob-tip-bolt {
@@ -189,6 +203,7 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+  flex: 1;
 }
 
 .ob-tip-headline {
@@ -204,9 +219,21 @@
 .ob-tip-sub {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--amber-dim);
   letter-spacing: 0.03em;
   color: rgba(232, 135, 10, 0.55);
+}
+
+.ob-tip-cta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--amber);
+  border: 1px solid var(--amber-border);
+  border-radius: 2px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* ── Active sort label ── */
@@ -274,14 +301,14 @@
 }
 
 .ob-part-row input[type=number] {
-  width: 52px;
+  width: 62px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 3px;
   color: var(--text-dim);
-  padding: 3px 5px;
+  padding: 4px 6px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 14px;
   text-align: center;
   transition: border-color 0.12s, box-shadow 0.12s, color 0.1s;
   flex-shrink: 0;
@@ -310,11 +337,30 @@
 .ob-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 14px 24px;
   border-top: 1px solid var(--border);
   flex-shrink: 0;
-  gap: 12px;
+  gap: 8px;
+}
+
+.ob-back-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.ob-back-btn:hover {
+  color: var(--text-dim);
+  border-color: var(--text-muted);
 }
 
 .ob-skip-btn {
@@ -329,6 +375,7 @@
   padding: 7px 14px;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
+  margin-left: auto;
 }
 
 .ob-skip-btn:hover {

@@ -154,6 +154,9 @@ SC.onboarding = (function () {
 
         overlay.querySelector('.ob-grid-wrap').scrollTop = 0;
 
+        var backBtn = overlay.querySelector('.ob-back-btn');
+        if (backBtn) { backBtn.style.display = currentStep === 0 ? 'none' : ''; }
+
         var nextBtn = overlay.querySelector('.ob-next-btn');
         if (currentStep >= steps.length - 1) {
             nextBtn.textContent = 'FINISH ✓';
@@ -161,6 +164,30 @@ SC.onboarding = (function () {
         } else {
             nextBtn.textContent = 'NEXT →';
             nextBtn.classList.remove('is-finish');
+        }
+    }
+
+    function fillTen() {
+        var type = steps[currentStep];
+        var inputs = overlay.querySelectorAll('.ob-part-row input[type=number]');
+        var parts = getSortedParts(type);
+        inputs.forEach(function (inp, i) {
+            if (!parts[i]) { return; }
+            inp.value = 10;
+            SC.counts[type] = SC.counts[type] || {};
+            SC.counts[type][parts[i].value] = 10;
+            if (SC.values[type] && SC.values[type][parts[i].value]) {
+                SC.values[type][parts[i].value].input.value = 10;
+            }
+        });
+        CA.storage.writeObject('SC.counts', SC.counts);
+        SC.sync.schedule && SC.sync.schedule();
+    }
+
+    function prev() {
+        if (currentStep > 0) {
+            currentStep--;
+            renderStep();
         }
     }
 
@@ -201,6 +228,11 @@ SC.onboarding = (function () {
         overlay.querySelector('.ob-skip-btn').onclick = function () {
             if (currentStep >= steps.length - 1) { finish(); } else { next(); }
         };
+
+        overlay.querySelector('.ob-back-btn').onclick = prev;
+
+        var fillBtn = overlay.querySelector('#ob-fill-ten');
+        if (fillBtn) { fillBtn.onclick = fillTen; }
 
         overlay.querySelector('.ob-next-btn').onclick = function () {
             if (currentStep >= steps.length - 1) { finish(); } else { next(); }
