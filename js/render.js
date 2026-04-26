@@ -90,6 +90,7 @@ SC.renderOne = function (unused, aCircuit, aErrors, aWarnings) {
     tr.appendChild(td);
     // complexity
     td = document.createElement('td');
+    td.className = 'complexity';
     b = document.createElement('b');
     b.textContent = Object.keys(aCircuit.parts).length + ': ';
     td.appendChild(b);
@@ -159,6 +160,7 @@ SC.renderAlmost = function (unused, aCircuit, aErrors, aWarnings) {
     tr.appendChild(td);
     // complexity
     td = document.createElement('td');
+    td.className = 'complexity';
     b = document.createElement('b');
     b.textContent = Object.keys(aCircuit.parts).length + ': ';
     td.appendChild(b);
