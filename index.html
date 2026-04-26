@@ -116,47 +116,179 @@
           <span class="banner-arrow">→</span>
         </div>
 
-        <h2>Resistors <span id="plus_10_resistor" class="plus10all" title="Increase all resistors by 10, i.e. you don't care about resistors">+10 all</span></h2>
-        <section id="type_resistor"></section>
+        <details class="sb-section" id="sd-resistor">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">Ω</span>
+            <span class="sb-name">Resistors</span>
+            <span class="sb-count" id="scount_resistor"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_resistor"></section>
+            <div class="sb-actions"><span id="plus_10_resistor" class="plus10all">+10 all</span></div>
+          </div>
+        </details>
 
-        <h2>Pots <span id="plus_10_pot" class="plus10all" title="Increase all pots by 10, i.e. you don't care about pots">+10 all</span></h2>
-        <section id="type_pot"></section>
+        <details class="sb-section" id="sd-capacitor">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">C</span>
+            <span class="sb-name">Capacitors</span>
+            <span class="sb-count" id="scount_capacitor"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_capacitor"></section>
+            <div class="sb-actions"><span id="plus_10_capacitor" class="plus10all">+10 all</span></div>
+          </div>
+        </details>
 
-        <h2>Pots (trimmer) <span id="plus_10_pot_trimmer" class="plus10all" title="Increase all pot trimmers by 10, i.e. you don't care about trimmers">+10 all</span></h2>
-        <section id="type_pot_trimmer"></section>
+        <details class="sb-section" id="sd-pot">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">⊕</span>
+            <span class="sb-name">Pots</span>
+            <span class="sb-count" id="scount_pot"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_pot"></section>
+            <div class="sb-actions"><span id="plus_10_pot" class="plus10all">+10 all</span></div>
+          </div>
+        </details>
 
-        <h2>LDR</h2>
-        <section id="type_ldr"></section>
+        <details class="sb-section" id="sd-pot_trimmer">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">⊕</span>
+            <span class="sb-name">Trimmers</span>
+            <span class="sb-count" id="scount_pot_trimmer"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_pot_trimmer"></section>
+            <div class="sb-actions"><span id="plus_10_pot_trimmer" class="plus10all">+10 all</span></div>
+          </div>
+        </details>
 
-        <h2>Capacitors <span id="plus_10_capacitor" class="plus10all" title="Increase all capacitors by 10, i.e. you don't care about capacitors">+10 all</span></h2>
-        <section id="type_capacitor"></section>
+        <details class="sb-section" id="sd-diode">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">▷</span>
+            <span class="sb-name">Diodes</span>
+            <span class="sb-count" id="scount_diode"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_diode"></section>
+            <div class="sb-actions"><span id="plus_10_diode" class="plus10all">+10 all</span></div>
+          </div>
+        </details>
 
-        <h2>Inductors</h2>
-        <section id="type_inductor"></section>
+        <details class="sb-section" id="sd-transistor">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">T</span>
+            <span class="sb-name">Transistors</span>
+            <span class="sb-count" id="scount_transistor"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_transistor"></section>
+          </div>
+        </details>
 
-        <h2>Diodes <span id="plus_10_diode" class="plus10all" title="Increase all diodes by 10, i.e. you don't care about diodes">+10 all</span></h2>
-        <section id="type_diode"></section>
+        <details class="sb-section" id="sd-chip">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">◫</span>
+            <span class="sb-name">Chips</span>
+            <span class="sb-count" id="scount_chip"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_chip"></section>
+          </div>
+        </details>
 
-        <h2>Transistors</h2>
-        <section id="type_transistor"></section>
+        <details class="sb-section" id="sd-switch">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">⏻</span>
+            <span class="sb-name">Switches</span>
+            <span class="sb-count" id="scount_switch"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_switch"></section>
+            <div class="sb-actions"><span id="plus_10_switch" class="plus10all">+10 all</span></div>
+          </div>
+        </details>
 
-        <h2>Supply</h2>
-        <section id="type_supply"></section>
+        <details class="sb-section" id="sd-supply">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">⚡</span>
+            <span class="sb-name">Supply</span>
+            <span class="sb-count" id="scount_supply"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_supply"></section>
+          </div>
+        </details>
 
-        <h2>Connectors</h2>
-        <section id="type_connector"></section>
+        <details class="sb-section" id="sd-inductor">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">∿</span>
+            <span class="sb-name">Inductors</span>
+            <span class="sb-count" id="scount_inductor"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_inductor"></section>
+          </div>
+        </details>
 
-        <h2>Switch <span id="plus_10_switch" class="plus10all" title="Increase all switches by 10, i.e. you don't care about switches">+10 all</span></h2>
-        <section id="type_switch"></section>
+        <details class="sb-section" id="sd-ldr">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">◑</span>
+            <span class="sb-name">LDR</span>
+            <span class="sb-count" id="scount_ldr"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_ldr"></section>
+          </div>
+        </details>
 
-        <h2>Chips</h2>
-        <section id="type_chip"></section>
+        <details class="sb-section" id="sd-connector">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">⌥</span>
+            <span class="sb-name">Connectors</span>
+            <span class="sb-count" id="scount_connector"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_connector"></section>
+          </div>
+        </details>
 
-        <h2>Tube</h2>
-        <section id="type_tube"></section>
+        <details class="sb-section" id="sd-tube">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">◎</span>
+            <span class="sb-name">Tubes</span>
+            <span class="sb-count" id="scount_tube"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_tube"></section>
+          </div>
+        </details>
 
-        <h2>Other</h2>
-        <section id="type_other"></section>
+        <details class="sb-section" id="sd-other">
+          <summary class="sb-header">
+            <span class="sb-chevron">›</span>
+            <span class="sb-icon">·</span>
+            <span class="sb-name">Other</span>
+            <span class="sb-count" id="scount_other"></span>
+          </summary>
+          <div class="sb-body">
+            <section id="type_other"></section>
+          </div>
+        </details>
 
         <div class="bottom">
             <a href="https://github.com/dvhx/what-can-i-build">Source</a>

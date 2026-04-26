@@ -59,7 +59,7 @@ SC.onUpdateCount = function (event) {
     SC.counts[type][value] = parseInt(count, 10);
     SC.refresh();
     CA.storage.writeObject('SC.counts', SC.counts);
-    // Sync to cloud if signed in; show banner if not
+    SC.updateSidebarCounts();
     SC.sync.schedule();
     SC.sync.updateBanner();
 };
@@ -133,9 +133,10 @@ SC.showParts = function () {
 };
 
 SC.plusTenAll = function (event) {
-    var v, t = event.target.parentElement.nextElementSibling.id.replace('type_', '');
+    event.stopPropagation();
+    var t = event.target.id.replace('plus_10_', '');
     if (!confirm('Increase all ' + t + ' counts by 10?')) { return; }
-    for (v in SC.values[t]) {
+    for (var v in SC.values[t]) {
         if (SC.values[t].hasOwnProperty(v)) {
             SC.counts[t] = SC.counts[t] || {};
             SC.counts[t][v] = SC.counts[t][v] || 0;
@@ -145,8 +146,32 @@ SC.plusTenAll = function (event) {
     }
     CA.storage.writeObject('SC.counts', SC.counts);
     SC.refresh();
+    SC.updateSidebarCounts();
     SC.sync.schedule();
     SC.sync.updateBanner();
+};
+
+SC.updateSidebarCounts = function () {
+    var t, v, entered, section, badge;
+    for (t in SC.values) {
+        if (!SC.values.hasOwnProperty(t)) { continue; }
+        entered = 0;
+        for (v in SC.counts[t] || {}) {
+            if ((SC.counts[t][v] || 0) > 0) { entered++; }
+        }
+        badge = document.getElementById('scount_' + t);
+        if (badge) {
+            badge.textContent = entered > 0 ? entered : '';
+        }
+        section = document.getElementById('sd-' + t);
+        if (section) {
+            if (entered > 0) {
+                section.classList.add('has-data');
+            } else {
+                section.classList.remove('has-data');
+            }
+        }
+    }
 };
 
 SC.exact = function (aPartsCounts) {
@@ -220,6 +245,7 @@ window.addEventListener('DOMContentLoaded', function () {
     // Populate sidebar inputs and run first filter pass
     SC.showParts();
     SC.refresh();
+    SC.updateSidebarCounts();
     SC.checkNewCircuits();
 
     // Welcome screen

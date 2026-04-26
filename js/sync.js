@@ -55,6 +55,7 @@ SC.sync = {
                     CA.storage.writeObject('SC.done',   SC.done);
                     SC.sync.refreshInputs();
                     SC.refresh();
+                    SC.updateSidebarCounts && SC.updateSidebarCounts();
                 }
                 if (callback) { callback(!!result.data); }
             });
