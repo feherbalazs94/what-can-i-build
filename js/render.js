@@ -51,10 +51,11 @@ SC.complexity = function (aCircuit) {
     }).join(' ');
 };
 
-SC.renderOne = function (unused, aCircuit, aErrors, aWarnings) {
+SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "can build" section
     var tr, td, linksDiv, w, k, b, span, lc;
     tr = document.createElement('tr');
+    tr.dataset.circuitKey = aKey;
     // links
     td = document.createElement('td');
     linksDiv = document.createElement('div');
@@ -111,10 +112,11 @@ SC.renderOne = function (unused, aCircuit, aErrors, aWarnings) {
     return tr;
 };
 
-SC.renderAlmost = function (unused, aCircuit, aErrors, aWarnings) {
+SC.renderAlmost = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "almost" section — shows missing part chips
     var tr, td, linksDiv, missingDiv, chip, w, k, b, span, lc, i;
     tr = document.createElement('tr');
+    tr.dataset.circuitKey = aKey;
     // links
     td = document.createElement('td');
     linksDiv = document.createElement('div');

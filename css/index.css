@@ -288,6 +288,105 @@ main {
 }
 
 /* ══════════════════════════════════════
+   DEEP-LINK BANNER
+══════════════════════════════════════ */
+#deeplink-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--amber-border);
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 0 24px rgba(232, 135, 10, 0.15),
+    0 8px 32px rgba(0,0,0,0.5);
+  white-space: nowrap;
+  animation: bannerSlide 0.3s ease;
+}
+
+@keyframes bannerSlide {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.dl-icon {
+  font-size: 14px;
+  color: var(--amber);
+  flex-shrink: 0;
+}
+
+.dl-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.dl-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dl-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+}
+
+.dl-from {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  padding-left: 6px;
+  border-left: 1px solid var(--border);
+}
+
+.dl-from span {
+  color: var(--text-dim);
+}
+
+.dl-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: color 0.15s;
+  margin-left: 4px;
+  font-family: var(--font-mono);
+}
+
+.dl-close:hover { color: var(--text); }
+
+/* ── Highlighted circuit row ── */
+tr.is-highlighted td {
+  background: var(--amber-bg) !important;
+  box-shadow: inset 3px 0 0 var(--amber) !important;
+  transition: background 0s;
+}
+
+tr.is-highlighted.highlight-fade td {
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: background 1.8s ease, box-shadow 1.8s ease;
+}
+
+/* ══════════════════════════════════════
    EMPTY STATE
 ══════════════════════════════════════ */
 #nothing {

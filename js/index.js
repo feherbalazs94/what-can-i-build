@@ -247,6 +247,7 @@ window.addEventListener('DOMContentLoaded', function () {
     SC.refresh();
     SC.updateSidebarCounts();
     SC.checkNewCircuits();
+    SC.deepLink.resolve();
 
     // Welcome screen
     SC.showWelcomeIfNeeded();
