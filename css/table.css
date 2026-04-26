@@ -1,4 +1,4 @@
-/* dark table styling */
+/* Circuit table — Boutique Pedal Workbench */
 
 table {
   width: 100%;
@@ -18,11 +18,12 @@ td {
 th {
   padding: 7px 8px 7px 20px;
   text-align: left;
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 400;
   border-bottom: 1px solid var(--border);
   background: var(--surface2);
   white-space: nowrap;
@@ -34,13 +35,13 @@ th:last-child {
 
 th.sticky {
   position: sticky;
-  top: 41px;
+  top: 52px;
   z-index: 5;
 }
 
 table td {
-  padding: 11px 8px 11px 20px;
-  border-bottom: 1px solid #0f1a26;
+  padding: 10px 8px 10px 20px;
+  border-bottom: 1px solid var(--border);
 }
 
 table td:last-child {
@@ -51,48 +52,65 @@ table td.full {
   width: 100%;
 }
 
-/* Row hover with left accent */
+/* ── Row hover ── */
 table tr {
-  transition: background 0.12s;
+  transition: background 0.1s;
 }
 
 table tr:hover td {
-  background: #0d1622;
+  background: var(--surface3);
 }
 
+/* Copper trace left accent on hover */
 table tr:hover td:first-child {
-  box-shadow: inset 3px 0 0 var(--green-border);
+  box-shadow: inset 2px 0 0 var(--copper-dim);
 }
 
-/* Circuit name + author */
+/* Green section rows — brighter left accent */
+#table_ok tr:hover td:first-child {
+  box-shadow: inset 2px 0 0 var(--green-dim);
+}
+
+/* ── Circuit name + author ── */
 .circuit-name {
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.04em;
   color: var(--text);
-  font-size: 13px;
   display: block;
+  text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .circuit-author {
+  font-family: var(--font-mono);
   color: var(--text-muted);
-  font-size: 11px;
-  margin-top: 2px;
+  font-size: 10px;
+  margin-top: 3px;
+  letter-spacing: 0.03em;
 }
 
-/* Substitution warnings */
+/* ── Substitution warnings ── */
 table .warning {
-  color: #22c55e;
-  font-size: 11px;
-  margin-top: 3px;
+  font-family: var(--font-mono);
+  color: var(--green-dim);
+  font-size: 10px;
+  margin-top: 4px;
+  letter-spacing: 0.02em;
 }
 
-/* Error text (kept for non-possible view) */
+/* ── Error (almost-section inline) ── */
 table .error {
-  color: var(--red-chip-text);
-  font-size: 11px;
-  margin-top: 3px;
+  font-family: var(--font-mono);
+  color: var(--red);
+  font-size: 10px;
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
 }
 
-/* Link column */
+/* ── Link column ── */
 .links {
   display: flex;
   flex-direction: column;
@@ -103,43 +121,52 @@ table .error {
 td a {
   display: inline-flex;
   align-items: center;
-  font-size: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
   padding: 3px 8px;
-  border-radius: 5px;
-  background: #101b28;
+  border-radius: 2px;
+  background: var(--surface2);
   border: 1px solid var(--border);
-  color: var(--text-dim);
+  color: var(--text-muted);
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 td a[href]:not([href=""]):hover {
-  background: var(--blue-bg);
-  border-color: var(--blue-border);
-  color: var(--blue);
+  background: var(--amber-bg);
+  border-color: var(--amber-border);
+  color: var(--amber);
 }
 
-/* Complexity column */
+/* ── Complexity column ── */
 .complexity {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   color: var(--text-muted);
   white-space: nowrap;
+  letter-spacing: 0.03em;
 }
 
 .complexity b {
   color: var(--text-dim);
+  font-weight: 400;
 }
 
-/* Done label+checkbox (CA.labelCheckbox output) */
+/* ── Done label+checkbox ── */
 table label {
-  font-size: 11px;
-  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   white-space: nowrap;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 table label input[type=checkbox] {
@@ -151,31 +178,34 @@ table td.nowrap {
   white-space: nowrap;
 }
 
-/* ─── "Almost" section: missing parts chips ─── */
+/* ── "Almost" section: missing parts chips ── */
 
 .missing-parts {
-  margin-top: 6px;
+  margin-top: 5px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
 }
 
 .missing-chip {
-  font-size: 10px;
-  padding: 2px 9px;
-  border-radius: 5px;
-  background: var(--red-chip-bg);
-  border: 1px solid var(--red-chip-border);
-  color: var(--red-chip-text);
-  letter-spacing: 0.01em;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
+  color: var(--red);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .missing-chip::before {
   content: '− ';
   font-weight: 700;
+  opacity: 0.7;
 }
 
-/* Hide table headers when the body has no rows */
+/* Hide table headers when tbody is empty */
 table:has(tbody:empty) thead {
   display: none;
 }

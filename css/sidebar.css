@@ -1,4 +1,4 @@
-/* Sidebar — accordion redesign */
+/* Sidebar — Boutique Pedal Workbench */
 
 #sidebar {
   height: 100%;
@@ -14,34 +14,54 @@
   width: 240px;
   padding-bottom: 24px;
   scrollbar-width: thin;
-  scrollbar-color: #1e2d3d transparent;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* ── PCB trace accent at sidebar top ── */
+#sidebar::before {
+  content: '';
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  display: block;
+  flex-shrink: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--copper-dim) 20%,
+    var(--copper) 50%,
+    var(--copper-dim) 80%,
+    transparent 100%
+  );
+  z-index: 3;
 }
 
 /* ── Header ── */
 .sidebar-title {
-  padding: 14px 16px 12px;
+  padding: 12px 16px 10px;
   border-bottom: 1px solid var(--border);
   position: sticky;
-  top: 0;
+  top: 2px;
   background: var(--surface);
   z-index: 2;
 }
 
 .sidebar-title h1 {
-  font-size: 10px;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   margin: 0;
 }
 
 /* ── Accordion sections ── */
 .sb-section {
-  border-bottom: 1px solid #111a28;
+  border-bottom: 1px solid var(--border);
 }
 
-/* Remove default details marker */
 .sb-section > summary {
   list-style: none;
 }
@@ -53,7 +73,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 9px 14px;
   cursor: pointer;
   transition: background 0.12s;
   outline: none;
@@ -61,61 +81,69 @@
 }
 
 .sb-header:hover {
-  background: #0d1421;
+  background: var(--surface3);
 }
 
-/* green left bar when section has data */
+/* Copper trace left indicator when section has data */
 .sb-section.has-data > .sb-header::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 6px;
-  bottom: 6px;
+  top: 5px;
+  bottom: 5px;
   width: 2px;
   border-radius: 0 2px 2px 0;
-  background: var(--green);
-  opacity: 0.7;
+  background: linear-gradient(to bottom, var(--amber), var(--copper));
+  opacity: 0.8;
 }
 
 /* ── Chevron ── */
 .sb-chevron {
-  font-size: 14px;
-  color: #334155;
+  font-size: 13px;
+  color: var(--border);
   transition: transform 0.18s ease, color 0.12s;
   line-height: 1;
   width: 12px;
   flex-shrink: 0;
   display: inline-block;
+  font-style: normal;
 }
 
 details[open] > .sb-header .sb-chevron {
   transform: rotate(90deg);
-  color: #64748b;
+  color: var(--copper-dim);
 }
 
 /* ── Icon ── */
 .sb-icon {
   font-size: 11px;
-  color: #334155;
+  color: var(--border);
   width: 16px;
   text-align: center;
   flex-shrink: 0;
   transition: color 0.12s;
   font-style: normal;
+  font-family: var(--font-mono);
 }
 
 .sb-section.has-data > .sb-header .sb-icon {
-  color: var(--green);
+  color: var(--amber-dim);
+}
+
+details[open] > .sb-header .sb-icon {
+  color: var(--amber);
 }
 
 /* ── Name ── */
 .sb-name {
   flex: 1;
-  font-size: 12px;
-  font-weight: 600;
-  color: #4a5568;
-  letter-spacing: 0.01em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
   transition: color 0.12s;
+  text-transform: uppercase;
 }
 
 .sb-header:hover .sb-name {
@@ -132,17 +160,18 @@ details[open] > .sb-header .sb-name {
 
 /* ── Count badge ── */
 .sb-count {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: rgba(74, 222, 128, 0.1);
-  color: var(--green);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: var(--amber-bg);
+  color: var(--amber);
+  border: 1px solid var(--amber-border);
   white-space: nowrap;
   opacity: 0;
   transform: scale(0.85);
   transition: opacity 0.15s, transform 0.15s;
+  letter-spacing: 0.04em;
 }
 
 .sb-count:not(:empty) {
@@ -150,15 +179,16 @@ details[open] > .sb-header .sb-name {
   transform: scale(1);
 }
 
-/* ── Body (the expanded content) ── */
+/* ── Body ── */
 .sb-body {
-  padding: 4px 0 10px;
-  background: #090e18;
+  padding: 4px 0 8px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
 }
 
-/* ── The grid of label+input pairs ── */
+/* ── Grid of label+input pairs ── */
 .sb-body > section {
-  padding: 0 12px;
+  padding: 0 10px;
   column-count: 2;
   column-gap: 2px;
 }
@@ -174,14 +204,16 @@ details[open] > .sb-header .sb-name {
 
 .sb-body section label > span {
   flex: 1;
-  color: #475569;
-  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-size: 10px;
   text-align: right;
   padding-right: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color 0.1s;
+  letter-spacing: 0.02em;
 }
 
 .sb-body section label:hover > span {
@@ -191,27 +223,28 @@ details[open] > .sb-header .sb-name {
 /* ── Number inputs ── */
 #sidebar input[type=number] {
   width: 42px;
-  background: #0a1120;
-  border: 1px solid #1a2a3a;
-  border-radius: 5px;
-  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
   padding: 2px 4px;
   font-size: 11px;
   text-align: center;
-  font-family: inherit;
+  font-family: var(--font-mono);
   transition: border-color 0.15s, box-shadow 0.15s, color 0.1s;
 }
 
 #sidebar input[type=number]:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+  border-color: var(--amber-border);
+  box-shadow: 0 0 0 2px rgba(232, 135, 10, 0.15);
+  color: var(--amber);
 }
 
-/* Highlight filled inputs */
 #sidebar input[type=number]:not([value=""]) {
-  border-color: rgba(74, 222, 128, 0.3);
-  color: #a7f3c8;
+  border-color: var(--amber-border);
+  color: var(--amber);
+  background: var(--amber-bg);
 }
 
 /* Always show spinners */
@@ -224,25 +257,27 @@ input[type=number]::-webkit-outer-spin-button {
 .sb-actions {
   display: flex;
   justify-content: flex-end;
-  padding: 6px 12px 0;
+  padding: 4px 10px 0;
 }
 
 .plus10all {
-  font-size: 10px;
-  font-weight: 600;
-  color: #334155;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--border);
   cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 2px 7px;
+  border-radius: 2px;
   border: 1px solid transparent;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
-  letter-spacing: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .plus10all:hover {
-  color: var(--blue);
-  border-color: var(--blue-border);
-  background: rgba(29, 78, 216, 0.08);
+  color: var(--amber);
+  border-color: var(--amber-border);
+  background: var(--amber-bg);
 }
 
 /* ── Sync banner ── */
@@ -251,24 +286,24 @@ input[type=number]::-webkit-outer-spin-button {
   align-items: center;
   gap: 8px;
   margin: 10px 12px 4px;
-  padding: 9px 12px;
-  background: #0c1e35;
-  border: 1px solid #1d4ed8;
-  border-radius: 8px;
+  padding: 8px 11px;
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  border-radius: 4px;
   font-size: 11px;
-  color: #93c5fd;
+  color: var(--blue);
   cursor: pointer;
   transition: background 0.15s;
 }
 
 #sync-banner:hover {
-  background: #0f2644;
+  background: #061426;
 }
 
-#sync-banner .banner-icon { font-size: 14px; flex-shrink: 0; }
-#sync-banner .banner-text { flex: 1; line-height: 1.4; }
-#sync-banner .banner-text strong { display: block; color: #bfdbfe; font-weight: 600; margin-bottom: 1px; }
-#sync-banner .banner-arrow { color: #3b82f6; font-size: 12px; }
+#sync-banner .banner-icon { font-size: 13px; flex-shrink: 0; }
+#sync-banner .banner-text { flex: 1; line-height: 1.4; font-family: var(--font-mono); font-size: 10px; }
+#sync-banner .banner-text strong { display: block; color: var(--text-dim); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1px; }
+#sync-banner .banner-arrow { color: var(--blue); font-size: 11px; }
 
 /* ── Footer ── */
 #sidebar .bottom {
@@ -279,14 +314,17 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #sidebar .bottom a {
-  color: #334155;
-  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--border);
+  font-size: 10px;
   text-decoration: none;
   transition: color 0.15s;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 #sidebar .bottom a:hover {
-  color: var(--text-muted);
+  color: var(--copper-dim);
 }
 
 /* ── Mobile ── */

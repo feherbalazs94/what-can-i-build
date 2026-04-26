@@ -1,10 +1,10 @@
-/* Welcome / onboarding screen */
+/* Welcome / onboarding — Boutique Pedal Workbench */
 
 #welcome-screen {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #060b14;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,197 +19,225 @@
   pointer-events: none;
 }
 
-/* ── Noise texture overlay ── */
+/* PCB grid overlay matching body */
 #welcome-screen::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 28px 28px;
   pointer-events: none;
 }
 
-/* ── Glow blobs ── */
+/* Amber tube-glow behind card */
 #welcome-screen::after {
   content: '';
   position: absolute;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 500px;
   border-radius: 50%;
   background: radial-gradient(
-    circle,
-    rgba(74, 222, 128, 0.06) 0%,
-    rgba(129, 140, 248, 0.04) 50%,
+    ellipse,
+    rgba(232, 135, 10, 0.07) 0%,
+    rgba(184, 115, 51, 0.04) 45%,
     transparent 70%
   );
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -60%);
+  transform: translate(-50%, -55%);
   pointer-events: none;
 }
 
+/* ── Card ── */
 .welcome-card {
   position: relative;
   z-index: 1;
-  max-width: 560px;
+  max-width: 580px;
   width: 100%;
   text-align: center;
 }
 
-/* ── Logo mark ── */
+/* ── Logo mark — oscilloscope CRT ring ── */
 .welcome-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #052e16 0%, #1e1b4b 100%);
-  border: 1px solid #1e2d3d;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--amber-bg) 0%, var(--bg) 100%);
+  border: 1px solid var(--amber-border);
   font-size: 26px;
-  margin-bottom: 24px;
-  box-shadow: 0 0 32px rgba(74, 222, 128, 0.15), 0 0 64px rgba(129, 140, 248, 0.08);
+  margin-bottom: 28px;
+  box-shadow:
+    0 0 0 4px rgba(232, 135, 10, 0.06),
+    0 0 24px rgba(232, 135, 10, 0.2),
+    0 0 60px rgba(232, 135, 10, 0.08);
 }
 
 /* ── Headline ── */
 .welcome-card h1 {
-  font-size: 36px;
-  font-weight: 800;
-  margin: 0 0 14px;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 8px;
+  color: var(--text);
 }
 
 .welcome-card h1 em {
   font-style: normal;
-  background: linear-gradient(90deg, #4ade80 0%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--amber);
+  text-shadow:
+    0 0 20px rgba(232, 135, 10, 0.5),
+    0 0 50px rgba(232, 135, 10, 0.2);
 }
 
+/* ── Tagline ── */
 .welcome-card p.tagline {
-  font-size: 15px;
-  color: #64748b;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
   margin: 0 0 40px;
-  line-height: 1.6;
-  max-width: 420px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* ── Steps ── */
+/* ── Steps grid ── */
 .welcome-steps {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 36px;
 }
 
 .welcome-step {
-  background: #0d1117;
-  border: 1px solid #1e2d3d;
-  border-radius: 12px;
-  padding: 20px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 18px 14px;
   text-align: left;
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s;
 }
 
+/* PCB copper trace top edge on each step */
 .welcome-step::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.03), transparent);
-  pointer-events: none;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--copper-dim), transparent);
+}
+
+.welcome-step:hover {
+  border-color: var(--amber-border);
 }
 
 .step-num {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
   margin-bottom: 12px;
   letter-spacing: 0;
 }
 
 .welcome-step:nth-child(1) .step-num {
-  background: rgba(74, 222, 128, 0.12);
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.25);
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
 }
 
 .welcome-step:nth-child(2) .step-num {
-  background: rgba(147, 197, 253, 0.10);
-  color: #93c5fd;
-  border: 1px solid rgba(147, 197, 253, 0.2);
+  background: var(--amber-bg);
+  color: var(--amber);
+  border: 1px solid var(--amber-border);
 }
 
 .welcome-step:nth-child(3) .step-num {
-  background: rgba(129, 140, 248, 0.10);
-  color: #818cf8;
-  border: 1px solid rgba(129, 140, 248, 0.2);
+  background: var(--indigo-bg);
+  color: var(--indigo);
+  border: 1px solid var(--indigo-border);
 }
 
 .step-icon {
-  font-size: 20px;
+  font-size: 18px;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .step-title {
   display: block;
+  font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 700;
-  color: #e2e8f0;
-  margin-bottom: 4px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
 }
 
 .step-desc {
   display: block;
-  font-size: 11px;
-  color: #475569;
-  line-height: 1.5;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
 }
 
-/* ── Actions ── */
+/* ── CTA buttons ── */
 .welcome-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .welcome-btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #166534 0%, #14532d 100%);
-  color: #4ade80;
-  border: 1px solid #166534;
-  border-radius: 10px;
-  padding: 12px 28px;
-  font-size: 14px;
+  gap: 10px;
+  background: var(--amber-bg);
+  color: var(--amber-bright);
+  border: 1px solid var(--amber-border);
+  border-radius: 4px;
+  padding: 13px 28px;
+  font-family: var(--font-display);
+  font-size: 15px;
   font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
-  letter-spacing: 0.01em;
-  box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
-  transition: box-shadow 0.2s, transform 0.15s;
-  font-family: inherit;
+  box-shadow:
+    0 0 20px rgba(232, 135, 10, 0.18),
+    inset 0 1px 0 rgba(255, 170, 32, 0.08);
+  transition: box-shadow 0.2s, transform 0.12s, border-color 0.15s;
   width: 100%;
   justify-content: center;
 }
 
 .welcome-btn-primary:hover {
-  box-shadow: 0 0 32px rgba(74, 222, 128, 0.35);
+  border-color: var(--amber);
+  box-shadow:
+    0 0 36px rgba(232, 135, 10, 0.32),
+    inset 0 1px 0 rgba(255, 170, 32, 0.12);
   transform: translateY(-1px);
 }
 
@@ -220,17 +248,18 @@
 .welcome-btn-secondary {
   background: none;
   border: none;
-  color: #4a5568;
-  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
   cursor: pointer;
-  font-family: inherit;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 3px;
   transition: color 0.15s;
+  letter-spacing: 0.04em;
 }
 
 .welcome-btn-secondary:hover {
-  color: #94a3b8;
+  color: var(--text-dim);
 }
 
 .welcome-divider {
@@ -238,8 +267,10 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  color: #1e2d3d;
-  font-size: 11px;
+  color: var(--border);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
 }
 
 .welcome-divider::before,
@@ -247,50 +278,33 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: #1e2d3d;
+  background: var(--border);
 }
 
-/* ── Save banner in sidebar ── */
+/* ── Sync banner in sidebar ── */
 #sync-banner {
   display: none;
   align-items: center;
   gap: 8px;
-  margin: 8px 14px;
-  padding: 9px 12px;
-  background: #0c1e35;
-  border: 1px solid #1d4ed8;
-  border-radius: 8px;
+  margin: 10px 12px 4px;
+  padding: 8px 11px;
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  border-radius: 4px;
   font-size: 11px;
-  color: #93c5fd;
+  color: var(--blue);
   cursor: pointer;
   transition: background 0.15s;
 }
 
 #sync-banner:hover {
-  background: #0f2644;
+  background: #061426;
 }
 
-#sync-banner .banner-icon {
-  font-size: 14px;
-  flex-shrink: 0;
-}
-
-#sync-banner .banner-text {
-  flex: 1;
-  line-height: 1.4;
-}
-
-#sync-banner .banner-text strong {
-  display: block;
-  color: #bfdbfe;
-  font-weight: 600;
-  margin-bottom: 1px;
-}
-
-#sync-banner .banner-arrow {
-  color: #3b82f6;
-  font-size: 12px;
-}
+#sync-banner .banner-icon { font-size: 13px; flex-shrink: 0; }
+#sync-banner .banner-text { flex: 1; line-height: 1.4; font-family: var(--font-mono); font-size: 10px; }
+#sync-banner .banner-text strong { display: block; color: var(--text-dim); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1px; }
+#sync-banner .banner-arrow { color: var(--blue); font-size: 11px; }
 
 @media only screen and (max-width: 700px) {
   .welcome-steps {
@@ -298,6 +312,6 @@
   }
 
   .welcome-card h1 {
-    font-size: 28px;
+    font-size: 32px;
   }
 }

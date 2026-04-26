@@ -1,102 +1,212 @@
-/* style for index.html */
+/* ═══════════════════════════════════════════════════
+   WHAT CAN I BUILD — Boutique Pedal Workbench Theme
+   ═══════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;700&family=Share+Tech+Mono&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-  --bg: #060b14;
-  --surface: #0d1117;
-  --surface2: #0a0f1a;
-  --border: #1e2d3d;
-  --text: #e2e8f0;
-  --text-muted: #64748b;
-  --text-dim: #94a3b8;
-  --green: #4ade80;
-  --green-bg: #052e16;
-  --green-border: #166534;
-  --indigo: #818cf8;
-  --indigo-bg: #1e1b4b;
-  --indigo-border: #3730a3;
-  --blue: #93c5fd;
-  --blue-bg: #0c1e35;
-  --blue-border: #1d4ed8;
-  --red-chip-bg: #1c0f0f;
-  --red-chip-border: #7f1d1d;
-  --red-chip-text: #f87171;
+  /* ── Base surfaces ── */
+  --bg:        #06050a;
+  --surface:   #0d0b12;
+  --surface2:  #100e16;
+  --surface3:  #14121a;
+
+  /* ── Borders ── */
+  --border:      #1e1b26;
+  --border-warm: #2a2218;
+
+  /* ── Text ── */
+  --text:       #ede8df;
+  --text-muted: #6b6058;
+  --text-dim:   #9b9282;
+
+  /* ── Amber — primary accent (tube glow, LED indicator) ── */
+  --amber:        #e8870a;
+  --amber-bright: #ffaa20;
+  --amber-dim:    #7a4500;
+  --amber-bg:     #160c01;
+  --amber-border: #5a3500;
+
+  /* ── Signal green — buildable circuits ── */
+  --green:        #39d353;
+  --green-bright: #5ef07a;
+  --green-dim:    #0e4b1a;
+  --green-bg:     #031008;
+  --green-border: #0e4b1a;
+
+  /* ── Indigo — almost buildable ── */
+  --indigo:        #818cf8;
+  --indigo-bg:     #080720;
+  --indigo-border: #252066;
+
+  /* ── Copper — decorative PCB trace ── */
+  --copper:     #b87333;
+  --copper-dim: #5c3a1a;
+
+  /* ── Red — missing parts ── */
+  --red:        #ef4444;
+  --red-bg:     #130404;
+  --red-border: #6b1010;
+
+  /* ── Blue — interactive UI ── */
+  --blue:        #60a5fa;
+  --blue-bg:     #040d1a;
+  --blue-border: #153460;
+
+  /* ── Typography ── */
+  --font-display: 'Antonio', sans-serif;
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-body:    'IBM Plex Sans', sans-serif;
 }
+
+/* ══════════════════════════════════════
+   BASE
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
   display: flex;
   width: 100vw;
   height: 100vh;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
-  background: var(--bg);
+  font-weight: 400;
+  background-color: var(--bg);
   color: var(--text);
+  overflow: hidden;
+}
+
+/* Subtle PCB grid overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 main {
-  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
   flex: 1;
   overflow-y: scroll;
   max-height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: #1e1b26 transparent;
 }
 
-/* Topbar */
+/* ══════════════════════════════════════
+   TOPBAR — Console control strip
+══════════════════════════════════════ */
 .topbar {
-  padding: 10px 20px;
+  padding: 0 24px;
+  height: 52px;
   border-bottom: 1px solid var(--border);
-  background: rgba(10, 15, 26, 0.92);
-  backdrop-filter: blur(8px);
+  background: var(--surface2);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   position: sticky;
   top: 0;
   z-index: 10;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+
+/* Copper accent line at top of topbar */
+.topbar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--copper-dim) 15%,
+    var(--amber) 40%,
+    var(--copper) 55%,
+    var(--copper-dim) 80%,
+    transparent 100%
+  );
 }
 
 .topbar h1 {
-  font-size: 12px;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--text-muted);
   margin: 0;
-  padding: 0;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
+/* ── LED badge readouts ── */
 .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
   font-size: 11px;
-  padding: 3px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  transition: box-shadow 0.2s;
+  padding: 4px 12px 4px 8px;
+  border-radius: 3px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* LED dot before each badge */
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .badge-green {
   background: var(--green-bg);
   color: var(--green);
   border: 1px solid var(--green-border);
-  box-shadow: 0 0 12px rgba(74, 222, 128, 0.18);
+  box-shadow: 0 0 16px rgba(57, 211, 83, 0.12), inset 0 0 12px rgba(57, 211, 83, 0.04);
+}
+.badge-green::before {
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green), 0 0 12px rgba(57, 211, 83, 0.6);
+  animation: ledPulse 2.4s ease-in-out infinite;
 }
 
 .badge-indigo {
   background: var(--indigo-bg);
   color: var(--indigo);
   border: 1px solid var(--indigo-border);
-  box-shadow: 0 0 12px rgba(129, 140, 248, 0.18);
+  box-shadow: 0 0 16px rgba(129, 140, 248, 0.1);
+}
+.badge-indigo::before {
+  background: var(--indigo);
+  box-shadow: 0 0 6px var(--indigo), 0 0 12px rgba(129, 140, 248, 0.5);
+  animation: ledPulse 3.2s ease-in-out infinite 0.4s;
 }
 
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* ── Filters ── */
 .filters {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-left: auto;
-  flex-wrap: wrap;
   align-items: center;
-  font-size: 12px;
-  color: var(--text-muted);
+  font-size: 11px;
+  font-family: var(--font-mono);
 }
 
 .filters label {
@@ -105,84 +215,87 @@ main {
   gap: 5px;
   cursor: pointer;
   user-select: none;
+  color: var(--text-muted);
   padding: 3px 8px;
-  border-radius: 6px;
+  border-radius: 3px;
   border: 1px solid transparent;
-  transition: border-color 0.15s, color 0.15s;
+  transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.04em;
 }
 
 .filters label:hover {
+  color: var(--text-dim);
   border-color: var(--border);
-  color: var(--text-dim);
-}
-
-.filters label span {
-  color: var(--text-muted);
-  transition: color 0.15s;
-}
-
-.filters label:hover span {
-  color: var(--text-dim);
 }
 
 .filters label input[type=checkbox] {
-  accent-color: var(--blue);
+  accent-color: var(--amber);
   cursor: pointer;
 }
 
-/* Section headers */
+/* ══════════════════════════════════════
+   SECTION HEADERS
+══════════════════════════════════════ */
 .section-header {
-  padding: 22px 20px 12px;
+  padding: 28px 28px 14px;
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 14px;
 }
 
 .section-header > span:first-child {
-  font-size: 15px;
+  font-size: 18px;
+  line-height: 1;
 }
 
 .section-header h1 {
-  font-size: 15px;
+  font-family: var(--font-display);
+  font-size: 22px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   margin: 0;
-  padding: 0;
-  letter-spacing: -0.01em;
 }
 
 .section-header h1.green {
   color: var(--green);
-  text-shadow: 0 0 24px rgba(74, 222, 128, 0.35);
+  text-shadow: 0 0 28px rgba(57, 211, 83, 0.4), 0 0 60px rgba(57, 211, 83, 0.15);
 }
 
 .section-header h1.indigo {
   color: var(--indigo);
-  text-shadow: 0 0 24px rgba(129, 140, 248, 0.35);
+  text-shadow: 0 0 28px rgba(129, 140, 248, 0.4), 0 0 60px rgba(129, 140, 248, 0.15);
 }
 
 .section-count {
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-muted);
+  letter-spacing: 0.04em;
 }
 
+/* ── Dividers ── */
 .section-divider {
-  margin: 0 20px;
+  margin: 0 28px;
   height: 1px;
-  background: var(--border);
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
 }
 
-/* Divider between the two main sections */
 .almost-divider {
-  margin-top: 32px;
+  margin-top: 40px;
   border-top: 1px solid var(--border);
-  background: linear-gradient(to bottom, #0d0e1f 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(13, 11, 18, 0.9) 0%, transparent 100%);
 }
 
-label {
-  user-select: none;
-}
-
+/* ══════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════ */
 #nothing {
-  padding: 20px;
+  padding: 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   color: var(--text-muted);
+  letter-spacing: 0.04em;
 }
+
+label { user-select: none; }

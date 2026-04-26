@@ -1,4 +1,4 @@
-/* Auth widget (topbar) + sign-in modal */
+/* Auth widget + sign-in modal — Boutique Pedal Workbench */
 
 /* ── Topbar auth widget ── */
 .auth-widget {
@@ -6,89 +6,102 @@
   align-items: center;
   gap: 8px;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .auth-open-btn {
-  font-size: 11px;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
   padding: 4px 12px;
-  border-radius: 6px;
-  border: 1px solid #1d4ed8;
-  background: rgba(29, 78, 216, 0.1);
-  color: #93c5fd;
+  border-radius: 3px;
+  border: 1px solid var(--amber-border);
+  background: var(--amber-bg);
+  color: var(--amber);
   cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition: box-shadow 0.15s, border-color 0.15s;
   white-space: nowrap;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .auth-open-btn:hover {
-  background: rgba(29, 78, 216, 0.2);
-  box-shadow: 0 0 12px rgba(147, 197, 253, 0.15);
+  border-color: var(--amber);
+  box-shadow: 0 0 12px rgba(232, 135, 10, 0.2);
 }
 
 .auth-avatar {
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: linear-gradient(135deg, #166534, #1e1b4b);
-  border: 1px solid #1e2d3d;
-  color: #4ade80;
-  font-size: 11px;
-  font-weight: 700;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   cursor: default;
+  letter-spacing: 0;
 }
 
 .auth-email {
-  font-size: 11px;
-  color: #64748b;
-  max-width: 140px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  max-width: 130px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  letter-spacing: 0.02em;
 }
 
 .auth-signout-btn {
-  font-size: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
   padding: 3px 8px;
-  border-radius: 5px;
-  border: 1px solid #1e2d3d;
+  border-radius: 2px;
+  border: 1px solid var(--border);
   background: transparent;
-  color: #475569;
+  color: var(--text-muted);
   cursor: pointer;
-  font-family: inherit;
   transition: color 0.15s, border-color 0.15s;
   white-space: nowrap;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .auth-signout-btn:hover {
-  color: #94a3b8;
-  border-color: #334155;
+  color: var(--text-dim);
+  border-color: var(--text-muted);
 }
 
+/* ── Sync indicator ── */
 .sync-indicator {
-  font-size: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.3s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .sync-indicator.saving {
-  color: #64748b;
+  color: var(--text-muted);
   opacity: 1;
 }
 
 .sync-indicator.saved {
-  color: #4ade80;
+  color: var(--green);
   opacity: 1;
 }
 
 .sync-indicator.error {
-  color: #f87171;
+  color: var(--red);
   opacity: 1;
 }
 
@@ -97,8 +110,8 @@
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(6, 11, 20, 0.85);
-  backdrop-filter: blur(6px);
+  background: rgba(6, 5, 10, 0.88);
+  backdrop-filter: blur(4px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -107,126 +120,150 @@
 }
 
 .auth-modal-box {
-  background: #0d1117;
-  border: 1px solid #1e2d3d;
-  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--amber-border);
+  border-radius: 4px;
   padding: 32px;
   width: 100%;
-  max-width: 400px;
+  max-width: 380px;
   position: relative;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.03),
-    0 24px 64px rgba(0, 0, 0, 0.6);
+    0 0 0 1px rgba(255,255,255,0.02),
+    0 0 40px rgba(232, 135, 10, 0.08),
+    0 24px 64px rgba(0, 0, 0, 0.7);
+}
+
+/* Copper trace top of modal */
+.auth-modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--copper), transparent);
 }
 
 .auth-modal-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   background: none;
   border: none;
-  color: #475569;
-  font-size: 18px;
+  color: var(--text-muted);
+  font-size: 16px;
   cursor: pointer;
   line-height: 1;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 4px 6px;
+  border-radius: 2px;
   transition: color 0.15s;
-  font-family: inherit;
+  font-family: var(--font-mono);
 }
 
 .auth-modal-close:hover {
-  color: #94a3b8;
+  color: var(--text);
 }
 
 .auth-modal-icon {
-  font-size: 28px;
-  margin-bottom: 16px;
+  font-size: 24px;
+  margin-bottom: 14px;
   display: block;
 }
 
 .auth-modal-box h2 {
-  font-size: 18px;
+  font-family: var(--font-display);
+  font-size: 20px;
   font-weight: 700;
-  color: #e2e8f0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
   margin: 0 0 8px;
-  letter-spacing: -0.02em;
 }
 
 .auth-modal-box p {
-  font-size: 13px;
-  color: #64748b;
-  margin: 0 0 24px;
-  line-height: 1.5;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0 0 22px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
 }
 
 #auth-email-input {
   width: 100%;
   box-sizing: border-box;
-  background: #060b14;
-  border: 1px solid #1e2d3d;
-  border-radius: 8px;
-  color: #e2e8f0;
-  padding: 10px 14px;
-  font-size: 13px;
-  font-family: inherit;
-  margin-bottom: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+  padding: 9px 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-bottom: 10px;
   transition: border-color 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.02em;
 }
 
 #auth-email-input:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  border-color: var(--amber-border);
+  box-shadow: 0 0 0 3px rgba(232, 135, 10, 0.12);
 }
 
 #auth-email-input::placeholder {
-  color: #334155;
+  color: var(--text-muted);
 }
 
 #auth-modal-send {
   width: 100%;
   padding: 10px 16px;
-  border-radius: 8px;
-  border: 1px solid #166534;
-  background: linear-gradient(135deg, #052e16, #14532d);
-  color: #4ade80;
+  border-radius: 3px;
+  border: 1px solid var(--amber-border);
+  background: var(--amber-bg);
+  color: var(--amber-bright);
+  font-family: var(--font-display);
   font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
-  font-family: inherit;
-  transition: box-shadow 0.2s;
-  box-shadow: 0 0 16px rgba(74, 222, 128, 0.15);
+  transition: box-shadow 0.2s, border-color 0.15s;
+  box-shadow: 0 0 16px rgba(232, 135, 10, 0.12);
 }
 
 #auth-modal-send:hover:not(:disabled) {
-  box-shadow: 0 0 24px rgba(74, 222, 128, 0.28);
+  border-color: var(--amber);
+  box-shadow: 0 0 28px rgba(232, 135, 10, 0.24);
 }
 
 #auth-modal-send:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .auth-status {
-  font-size: 12px;
-  margin-top: 12px;
-  min-height: 18px;
-  line-height: 1.4;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  margin-top: 10px;
+  min-height: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
 }
 
 .auth-status.success {
-  color: #4ade80;
+  color: var(--green);
 }
 
 .auth-status.error {
-  color: #f87171;
+  color: var(--red);
 }
 
 .auth-note {
-  font-size: 11px !important;
-  color: #334155 !important;
-  margin-top: 20px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  color: var(--text-muted) !important;
+  margin-top: 18px !important;
   margin-bottom: 0 !important;
   text-align: center;
+  letter-spacing: 0.02em;
 }
