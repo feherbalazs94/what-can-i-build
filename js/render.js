@@ -10,7 +10,8 @@ SC.URL_LABELS = {
     perfboard: 'perf',
     pcb: 'pcb',
     tagboard: 'tag',
-    pedal: 'pedal'
+    pedal: 'pedal',
+    demo: '🎵 demo'
 };
 
 SC.renderUrl = function (aContainer, aIcon, aUrl) {
@@ -51,6 +52,54 @@ SC.complexity = function (aCircuit) {
     }).join(' ');
 };
 
+SC.renderVoteCol = function (aCircuit) {
+    // Returns a <td> with ▲ score ▼ vote buttons
+    var td, wrap, btnUp, score, btnDown;
+    td = document.createElement('td');
+    wrap = document.createElement('div');
+    wrap.className = 'vote-col';
+
+    btnUp = document.createElement('button');
+    btnUp.className = 'vote-btn up';
+    btnUp.textContent = '▲';
+    btnUp.title = 'Upvote';
+    btnUp.dataset.circuitId = aCircuit.id;
+    btnUp.dataset.value = '1';
+
+    score = document.createElement('span');
+    score.className = 'vote-score' + (aCircuit.vote_score > 0 ? ' positive' : aCircuit.vote_score < 0 ? ' negative' : '');
+    score.textContent = aCircuit.vote_score || 0;
+    score.dataset.circuitId = aCircuit.id;
+
+    btnDown = document.createElement('button');
+    btnDown.className = 'vote-btn down';
+    btnDown.textContent = '▼';
+    btnDown.title = 'Downvote';
+    btnDown.dataset.circuitId = aCircuit.id;
+    btnDown.dataset.value = '-1';
+
+    btnUp.onclick   = function () { SC.vote.cast(aCircuit.id,  1, score, btnUp, btnDown); };
+    btnDown.onclick = function () { SC.vote.cast(aCircuit.id, -1, score, btnUp, btnDown); };
+
+    wrap.appendChild(btnUp);
+    wrap.appendChild(score);
+    wrap.appendChild(btnDown);
+    td.appendChild(wrap);
+    return td;
+};
+
+SC.renderCommentsBtn = function (aKey, aCircuit) {
+    // Returns a <td> with a 💬 N comments button
+    var td, btn;
+    td = document.createElement('td');
+    btn = document.createElement('button');
+    btn.className = 'comment-btn';
+    btn.innerHTML = '💬 <span class="comment-count" id="ccount_' + aKey + '">…</span>';
+    btn.onclick = function () { SC.comments.open(aCircuit.id, aCircuit.name, aKey); };
+    td.appendChild(btn);
+    return td;
+};
+
 SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "can build" section
     var tr, td, linksDiv, w, k, b, span, lc;
@@ -73,6 +122,12 @@ SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
     b = document.createElement('b');
     b.className = 'circuit-name';
     b.textContent = aCircuit.name;
+    if (aCircuit.submitted_by) {
+        var badge = document.createElement('span');
+        badge.className = 'community-badge';
+        badge.textContent = 'community';
+        b.appendChild(badge);
+    }
     td.appendChild(b);
     if (aCircuit.author) {
         span = document.createElement('div');
@@ -109,6 +164,8 @@ SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
         CA.storage.writeObject('SC.done', SC.done);
     };
     tr.appendChild(td);
+    tr.appendChild(SC.renderVoteCol(aCircuit));
+    tr.appendChild(SC.renderCommentsBtn(aKey, aCircuit));
     return tr;
 };
 
@@ -134,6 +191,12 @@ SC.renderAlmost = function (aKey, aCircuit, aErrors, aWarnings) {
     b = document.createElement('b');
     b.className = 'circuit-name';
     b.textContent = aCircuit.name;
+    if (aCircuit.submitted_by) {
+        var badge = document.createElement('span');
+        badge.className = 'community-badge';
+        badge.textContent = 'community';
+        b.appendChild(badge);
+    }
     td.appendChild(b);
     if (aCircuit.author) {
         span = document.createElement('div');
@@ -180,6 +243,8 @@ SC.renderAlmost = function (aKey, aCircuit, aErrors, aWarnings) {
         CA.storage.writeObject('SC.done', SC.done);
     };
     tr.appendChild(td);
+    tr.appendChild(SC.renderVoteCol(aCircuit));
+    tr.appendChild(SC.renderCommentsBtn(aKey, aCircuit));
     return tr;
 };
 
