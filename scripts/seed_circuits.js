@@ -19,7 +19,9 @@ if (!SUPABASE_SERVICE_KEY) {
     process.exit(1);
 }
 
-var client = supabaseJs.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+var client = supabaseJs.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false }
+});
 
 var circuitDir = path.join(__dirname, '..', 'circuit');
 var files = fs.readdirSync(circuitDir).filter(function (f) {
