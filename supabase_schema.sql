@@ -31,15 +31,27 @@ CREATE TRIGGER trg_user_parts_updated_at
   BEFORE UPDATE ON public.user_parts
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
+-- ─── user_roles (table + RLS enable only — policies come after is_admin()) ──────
+-- Fix #1: defined here so is_admin() can reference it at parse time
+CREATE TABLE IF NOT EXISTS public.user_roles (
+  user_id    UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  role       TEXT NOT NULL CHECK (role IN ('admin')),
+  granted_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  granted_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
+
 -- ─── Helper: is current user an admin? ────────────────────────────────────────
 -- SECURITY DEFINER so it bypasses RLS when called from policies (avoids recursion)
+-- Fix #2 (partial): pin search_path on SECURITY DEFINER function
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.user_roles
     WHERE user_id = auth.uid() AND role = 'admin'
   );
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public, pg_temp;
 
 -- ─── circuits ─────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS public.circuits (
@@ -76,9 +88,11 @@ CREATE POLICY "insert pending circuit"
   ON public.circuits FOR INSERT
   WITH CHECK (auth.uid() IS NOT NULL AND status = 'pending' AND submitted_by = auth.uid());
 
+-- Fix #3: added WITH CHECK to admin UPDATE policy
 CREATE POLICY "admin update circuit"
   ON public.circuits FOR UPDATE
-  USING (public.is_admin());
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
 
 CREATE POLICY "admin delete circuit"
   ON public.circuits FOR DELETE
@@ -102,9 +116,12 @@ CREATE INDEX IF NOT EXISTS idx_votes_circuit ON public.votes (circuit_id);
 
 ALTER TABLE public.votes ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "select votes"   ON public.votes FOR SELECT USING (true);
+CREATE POLICY "select votes"    ON public.votes FOR SELECT USING (true);
 CREATE POLICY "insert own vote" ON public.votes FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "update own vote" ON public.votes FOR UPDATE USING (auth.uid() = user_id);
+-- Fix #4: added WITH CHECK to votes UPDATE policy
+CREATE POLICY "update own vote" ON public.votes FOR UPDATE
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "delete own vote" ON public.votes FOR DELETE USING (auth.uid() = user_id);
 
 -- ─── vote_score trigger ───────────────────────────────────────────────────────
@@ -143,9 +160,12 @@ CREATE INDEX IF NOT EXISTS idx_comments_parent  ON public.comments (parent_id);
 
 ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "select comments"   ON public.comments FOR SELECT USING (true);
+CREATE POLICY "select comments"    ON public.comments FOR SELECT USING (true);
 CREATE POLICY "insert own comment" ON public.comments FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "update own comment" ON public.comments FOR UPDATE USING (auth.uid() = user_id);
+-- Fix #5: added WITH CHECK to comments UPDATE policy
+CREATE POLICY "update own comment" ON public.comments FOR UPDATE
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "delete own comment" ON public.comments FOR DELETE USING (auth.uid() = user_id);
 
 CREATE TRIGGER trg_comments_updated_at
@@ -153,26 +173,23 @@ CREATE TRIGGER trg_comments_updated_at
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
 -- ─── comment upvote RPC ───────────────────────────────────────────────────────
--- Prevents double-voting via session-scoped idempotency (client tracks in localStorage)
+-- Fix #2: added auth guard + pinned search_path
 CREATE OR REPLACE FUNCTION public.increment_comment_vote(comment_id UUID)
 RETURNS void AS $$
-  UPDATE public.comments SET vote_score = vote_score + 1 WHERE id = comment_id;
-$$ LANGUAGE sql SECURITY DEFINER;
+  UPDATE public.comments
+  SET vote_score = vote_score + 1
+  WHERE id = comment_id
+    AND auth.uid() IS NOT NULL;
+$$ LANGUAGE sql SECURITY DEFINER SET search_path = public, pg_temp;
 
--- ─── user_roles ───────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS public.user_roles (
-  user_id    UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-  role       TEXT NOT NULL CHECK (role IN ('admin')),
-  granted_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
-  granted_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
-);
-
-ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
-
+-- ─── user_roles policies (must come after is_admin()) ─────────────────────────
+-- Fix #1: policies moved here so is_admin() is already defined
 CREATE POLICY "select own role or admin"
   ON public.user_roles FOR SELECT
   USING (auth.uid() = user_id OR public.is_admin());
 
+-- Fix #6: added WITH CHECK to user_roles FOR ALL policy
 CREATE POLICY "admin manage roles"
   ON public.user_roles FOR ALL
-  USING (public.is_admin());
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
