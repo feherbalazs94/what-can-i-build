@@ -20,6 +20,7 @@ SC.auth = {
             SC.auth.updateWidget();
             if (event === 'SIGNED_IN' && !wasSignedIn) {
                 SC.sync.onSignIn();
+                SC.vote.loadMyVotes();
             }
             if (event === 'SIGNED_OUT') {
                 SC.sync.updateBanner();
