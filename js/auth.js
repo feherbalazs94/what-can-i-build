@@ -78,6 +78,19 @@ SC.auth = {
         }
 
         SC.sync.updateBanner();
+        var adminLink = document.getElementById('admin-link');
+        if (adminLink && SUPABASE_CONFIGURED && SC.auth.user && SC.auth.client) {
+            SC.auth.client
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', SC.auth.user.id)
+                .maybeSingle()
+                .then(function (result) {
+                    adminLink.style.display = (result.data && result.data.role === 'admin') ? '' : 'none';
+                });
+        } else if (adminLink) {
+            adminLink.style.display = 'none';
+        }
     },
 
     openModal: function () {

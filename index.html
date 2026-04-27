@@ -334,6 +334,8 @@
                 </label>
             </div>
             <!-- Auth widget (sign in / avatar) -->
+            <button class="submit-layout-btn" id="submit-layout-btn">+ Submit layout</button>
+            <a class="admin-link" id="admin-link" href="admin.html" style="display:none">⚙ Admin</a>
             <div class="auth-widget" id="auth-widget"></div>
         </div>
 
@@ -431,6 +433,68 @@
           <button class="ob-back-btn">← Back</button>
           <button class="ob-skip-btn">Skip</button>
           <button class="ob-next-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Submit layout modal ═════════════════════════════════════════ -->
+    <div class="sc-modal-overlay" id="submit-modal-overlay">
+      <div class="sc-modal">
+        <div class="sc-modal-header">
+          <h3>+ Submit layout</h3>
+          <button class="sc-modal-close" id="submit-modal-close">✕</button>
+        </div>
+        <div class="sc-modal-body">
+          <div class="sc-form-row">
+            <div class="sc-form-group">
+              <span class="sc-form-label">Circuit name <span class="req">*</span></span>
+              <input class="sc-input" id="submit-name" placeholder="e.g. Fuzz War Clone" autocomplete="off" />
+            </div>
+            <div class="sc-form-group">
+              <span class="sc-form-label">Author / designer</span>
+              <input class="sc-input" id="submit-author" placeholder="e.g. Death by Audio" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="sc-form-group full">
+            <span class="sc-form-label">Layout links</span>
+            <div class="sc-url-grid">
+              <div class="sc-url-item"><div class="sc-url-label">Schematic</div><input class="sc-url-input" id="submit-url-schematic" placeholder="https://…" /></div>
+              <div class="sc-url-item"><div class="sc-url-label">Stripboard</div><input class="sc-url-input" id="submit-url-stripboard" placeholder="https://…" /></div>
+              <div class="sc-url-item"><div class="sc-url-label">Perfboard</div><input class="sc-url-input" id="submit-url-perfboard" placeholder="https://…" /></div>
+              <div class="sc-url-item"><div class="sc-url-label">PCB</div><input class="sc-url-input" id="submit-url-pcb" placeholder="https://…" /></div>
+              <div class="sc-url-item"><div class="sc-url-label">Tagboard</div><input class="sc-url-input" id="submit-url-tagboard" placeholder="https://…" /></div>
+              <div class="sc-url-item"><div class="sc-url-label">Demo 🎵</div><input class="sc-url-input" id="submit-url-demo" placeholder="https://…" /></div>
+            </div>
+          </div>
+
+          <div class="sc-form-group full">
+            <span class="sc-form-label">Components <span class="req">*</span></span>
+            <div class="sc-tabs">
+              <button class="sc-tab active" id="parts-tab-rows">Row by row</button>
+              <button class="sc-tab"        id="parts-tab-json">Paste JSON</button>
+            </div>
+            <div id="parts-panel-rows">
+              <div class="sc-parts-table" id="parts-rows-table">
+                <div class="sc-parts-row">
+                  <div class="sc-parts-cell header">Designator</div>
+                  <div class="sc-parts-cell header">Value</div>
+                  <div class="sc-parts-cell header"></div>
+                </div>
+              </div>
+              <button class="sc-add-part-btn" id="parts-add-row">+ Add component</button>
+            </div>
+            <div id="parts-panel-json" style="display:none">
+              <textarea class="sc-json-textarea" id="parts-json-input" placeholder='{"C1": "100n", "R1": "10k", "Q1": "BC549C"}'></textarea>
+              <div class="sc-json-hint">Paste a JSON object mapping designator → value. Example: <code>{"R1": "10k", "C1": "100n"}</code></div>
+            </div>
+          </div>
+
+          <div class="sc-status" id="submit-status"></div>
+        </div>
+        <div class="sc-modal-footer">
+          <button class="sc-btn-cancel" id="submit-modal-cancel">Cancel</button>
+          <button class="sc-btn-primary" id="submit-modal-send">Submit for review →</button>
         </div>
       </div>
     </div>
