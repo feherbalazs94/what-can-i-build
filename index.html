@@ -15,32 +15,37 @@
     <link rel="icon" href="image/icon.svg" type="image/svg+xml" />
     <link rel="shortcut icon" href="image/icon.png" type="image/png" />
 
-    <link rel="stylesheet" href="css/index.css?version=275" type="text/css" />
-    <link rel="stylesheet" href="css/sidebar.css?version=275" type="text/css" />
-    <link rel="stylesheet" href="css/table.css?version=275" type="text/css" />
-    <link rel="stylesheet" href="css/mobile.css?version=275" type="text/css" />
-    <link rel="stylesheet" href="css/welcome.css?version=275" type="text/css" />
-    <link rel="stylesheet" href="css/auth.css?version=275" type="text/css" />
-    <link rel="stylesheet" href="css/onboarding.css?version=275" type="text/css" />
+    <link rel="stylesheet" href="css/index.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/sidebar.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/table.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/mobile.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/welcome.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/auth.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/onboarding.css?version=276" type="text/css" />
 
     <!-- Supabase CDN (used when SUPABASE_CONFIGURED = true) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
-    <script type="text/javascript" src="depend/canvas/canvas.src.js?version=275"></script>
-    <script type="text/javascript" src="circuit/circuits.js?version=275"></script>
+    <script type="text/javascript" src="depend/canvas/canvas.src.js?version=276"></script>
+    <script type="text/javascript" src="js/config.js?version=276"></script>
+    <script type="text/javascript" src="js/global.js?version=276"></script>
+    <script type="text/javascript" src="js/utils.js?version=276"></script>
+    <script type="text/javascript" src="js/engineering.js?version=276"></script>
+    <script type="text/javascript" src="js/check_new_circuits.js?version=276"></script>
+    <script type="text/javascript" src="js/auth.js?version=276"></script>
+    <script type="text/javascript" src="js/sync.js?version=276"></script>
+    <script type="text/javascript" src="js/index.js?version=276"></script>
+    <script type="text/javascript" src="js/render.js?version=276"></script>
+    <script type="text/javascript" src="js/filter.js?version=276"></script>
+    <script type="text/javascript" src="js/onboarding.js?version=276"></script>
+    <script type="text/javascript" src="js/deeplink.js?version=276"></script>
 
-    <script type="text/javascript" src="js/config.js?version=275"></script>
-    <script type="text/javascript" src="js/global.js?version=275"></script>
-    <script type="text/javascript" src="js/utils.js?version=275"></script>
-    <script type="text/javascript" src="js/engineering.js?version=275"></script>
-    <script type="text/javascript" src="js/check_new_circuits.js?version=275"></script>
-    <script type="text/javascript" src="js/auth.js?version=275"></script>
-    <script type="text/javascript" src="js/sync.js?version=275"></script>
-    <script type="text/javascript" src="js/index.js?version=275"></script>
-    <script type="text/javascript" src="js/render.js?version=275"></script>
-    <script type="text/javascript" src="js/filter.js?version=275"></script>
-    <script type="text/javascript" src="js/onboarding.js?version=275"></script>
-    <script type="text/javascript" src="js/deeplink.js?version=275"></script>
+    <link rel="stylesheet" href="css/community.css?version=276" type="text/css" />
+
+    <script type="text/javascript" src="js/community.js?version=276"></script>
+    <script type="text/javascript" src="js/vote.js?version=276"></script>
+    <script type="text/javascript" src="js/submit.js?version=276"></script>
+    <script type="text/javascript" src="js/comments.js?version=276"></script>
 
   </head>
   <body>
@@ -311,6 +316,10 @@
     <!-- ══ Main content ═══════════════════════════════════════════════ -->
     <main>
 
+        <div id="circuits-loading" style="padding: 2rem; color: #475569; font-size: 13px;">
+          Loading circuits…
+        </div>
+
         <div class="topbar">
             <h1>What can I build</h1>
             <span id="badge_ready" class="badge badge-green">✓ 0 ready</span>
@@ -341,6 +350,8 @@
                     <th class="sticky">Links</th>
                     <th class="sticky" style="width: 100%">Circuit</th>
                     <th class="sticky" style="min-width: 8ex;">Parts</th>
+                    <th class="sticky" style="text-align:center">Vote</th>
+                    <th class="sticky">Comments</th>
                     <th class="sticky">Action</th>
                 </tr>
             </thead>
@@ -363,6 +374,8 @@
                     <th>Links</th>
                     <th style="width: 100%">Circuit</th>
                     <th style="min-width: 8ex;">Parts</th>
+                    <th style="text-align:center">Vote</th>
+                    <th>Comments</th>
                     <th>Action</th>
                 </tr>
             </thead>

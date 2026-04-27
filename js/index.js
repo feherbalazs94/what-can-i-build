@@ -242,12 +242,18 @@ window.addEventListener('DOMContentLoaded', function () {
     SC.e.plus_10_diode.onclick       = SC.plusTenAll;
     SC.e.plus_10_switch.onclick      = SC.plusTenAll;
 
-    // Populate sidebar inputs and run first filter pass
-    SC.showParts();
-    SC.refresh();
-    SC.updateSidebarCounts();
-    SC.checkNewCircuits();
-    SC.deepLink.resolve();
+    // Load circuits async from Supabase, then boot the UI
+    SC.loadCircuits().then(function () {
+        var loader = document.getElementById('circuits-loading');
+        if (loader) { loader.style.display = 'none'; }
+        SC.showParts();
+        SC.refresh();
+        SC.updateSidebarCounts();
+        SC.checkNewCircuits();
+        SC.deepLink.resolve();
+        SC.submit.init();
+        SC.comments.init();
+    });
 
     // Welcome screen
     SC.showWelcomeIfNeeded();
