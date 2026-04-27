@@ -1,15 +1,36 @@
-// Load approved circuits from Supabase, replacing the old circuits.js global
-"use strict";
+'use strict';
 // globals: supabase, SUPABASE_URL, SUPABASE_ANON_KEY
 
 var SC = window.SC || {};
 
-SC.loadCircuits = function () {
-    // Returns a Promise that resolves when SC.circuit is populated.
-    // Uses a fresh anon client so this can be called before auth.init().
-    var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    SC.circuit = SC.circuit || {};
+var _CIRCUIT_CACHE_KEY = 'SC.circuitsCache';
+var _CIRCUIT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
+SC._parseCircuitRows = function (rows) {
+    SC.circuit = {};
+    (rows || []).forEach(function (row) {
+        SC.circuit[row.key] = {
+            id:           row.id,
+            key:          row.key,
+            name:         row.name,
+            author:       row.author || '',
+            submitted_by: row.submitted_by,
+            vote_score:   row.vote_score || 0,
+            url: {
+                schematic:  row.url_schematic  || '',
+                stripboard: row.url_stripboard || '',
+                perfboard:  row.url_perfboard  || '',
+                pcb:        row.url_pcb        || '',
+                tagboard:   row.url_tagboard   || '',
+                pedal:      row.url_pedal      || '',
+                demo:       row.url_demo       || ''
+            },
+            parts: row.parts || {}
+        };
+    });
+};
+
+SC._fetchAndCacheCircuits = function (client) {
     return client
         .from('circuits')
         .select('id, key, name, author, url_schematic, url_stripboard, url_perfboard, url_pcb, url_tagboard, url_pedal, url_demo, parts, status, submitted_by, vote_score')
@@ -19,26 +40,36 @@ SC.loadCircuits = function () {
                 console.error('loadCircuits error:', result.error.message);
                 return;
             }
-            SC.circuit = {};
-            (result.data || []).forEach(function (row) {
-                SC.circuit[row.key] = {
-                    id:           row.id,
-                    key:          row.key,
-                    name:         row.name,
-                    author:       row.author || '',
-                    submitted_by: row.submitted_by,
-                    vote_score:   row.vote_score || 0,
-                    url: {
-                        schematic:  row.url_schematic  || '',
-                        stripboard: row.url_stripboard || '',
-                        perfboard:  row.url_perfboard  || '',
-                        pcb:        row.url_pcb        || '',
-                        tagboard:   row.url_tagboard   || '',
-                        pedal:      row.url_pedal      || '',
-                        demo:       row.url_demo       || ''
-                    },
-                    parts: row.parts || {}
-                };
-            });
+            SC._parseCircuitRows(result.data);
+            try {
+                localStorage.setItem(_CIRCUIT_CACHE_KEY, JSON.stringify({
+                    ts:   Date.now(),
+                    rows: result.data
+                }));
+            } catch (e) { /* storage full — just skip caching */ }
         });
+};
+
+SC.loadCircuits = function () {
+    // Serve from localStorage if cache is fresh, then revalidate in background.
+    var cached;
+    try {
+        cached = JSON.parse(localStorage.getItem(_CIRCUIT_CACHE_KEY) || 'null');
+    } catch (e) { cached = null; }
+
+    var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    if (cached && (Date.now() - cached.ts) < _CIRCUIT_CACHE_TTL) {
+        // Cache hit — populate immediately, refresh in background
+        SC._parseCircuitRows(cached.rows);
+        SC._fetchAndCacheCircuits(client); // background refresh, don't await
+        return Promise.resolve();
+    }
+
+    // Cache miss or stale — fetch synchronously (user waits once)
+    return SC._fetchAndCacheCircuits(client);
+};
+
+SC.clearCircuitCache = function () {
+    localStorage.removeItem(_CIRCUIT_CACHE_KEY);
 };
