@@ -29,12 +29,10 @@ SC.submit = {
         });
         var status = document.getElementById('submit-status');
         if (status) { status.textContent = ''; status.className = 'sc-status'; }
-        var table = document.getElementById('parts-rows-table');
-        if (table) {
-            while (table.children.length > 1) { table.removeChild(table.lastChild); }
-        }
-        SC.submit._addPartRow();
-        SC.submit._addPartRow();
+        var list = document.getElementById('parts-rows-list');
+        if (list) { list.innerHTML = ''; }
+        var empty = document.getElementById('parts-rows-empty');
+        if (empty) { empty.style.display = ''; }
         SC.submit._switchTab('rows');
     },
 
@@ -45,32 +43,66 @@ SC.submit = {
         document.getElementById('parts-panel-json').style.display = tab === 'json' ? '' : 'none';
     },
 
-    _addPartRow: function () {
-        var table = document.getElementById('parts-rows-table');
-        if (!table) { return; }
-        var row     = document.createElement('div');
+    _TYPES: {
+        R:  { label: 'Resistor',   color: 'resistor',   hint: '10k'     },
+        C:  { label: 'Capacitor',  color: 'capacitor',  hint: '100n'    },
+        P:  { label: 'Pot',        color: 'pot',        hint: '100k'    },
+        Q:  { label: 'Transistor', color: 'transistor', hint: 'BC549C'  },
+        D:  { label: 'Diode',      color: 'diode',      hint: '1N4148'  },
+        U:  { label: 'IC',         color: 'ic',         hint: 'TL072'   },
+        SW: { label: 'Switch',     color: 'sw',         hint: 'DPDT'    },
+        '': { label: 'Other',      color: 'other',      hint: '…'       }
+    },
+
+    _nextDesignator: function (prefix) {
+        if (!prefix) { return ''; }
+        var list = document.getElementById('parts-rows-list');
+        var count = 0;
+        if (list) {
+            list.querySelectorAll('.sc-designator-input').forEach(function (inp) {
+                if (inp.value.toUpperCase().indexOf(prefix.toUpperCase()) === 0) { count++; }
+            });
+        }
+        return prefix + (count + 1);
+    },
+
+    _addComponent: function (prefix, typeDef) {
+        var list = document.getElementById('parts-rows-list');
+        var empty = document.getElementById('parts-rows-empty');
+        if (!list) { return; }
+        if (empty) { empty.style.display = 'none'; }
+
+        var row = document.createElement('div');
         row.className = 'sc-parts-row';
-        var cellDes = document.createElement('div');
-        cellDes.className = 'sc-parts-cell';
-        var inDes = document.createElement('input');
-        inDes.placeholder = 'C1';
-        cellDes.appendChild(inDes);
-        var cellVal = document.createElement('div');
-        cellVal.className = 'sc-parts-cell';
-        var inVal = document.createElement('input');
-        inVal.placeholder = '100n';
-        cellVal.appendChild(inVal);
-        var cellBtn = document.createElement('div');
-        cellBtn.className = 'sc-parts-cell';
-        var btn = document.createElement('button');
-        btn.className = 'sc-remove-btn';
-        btn.textContent = '×';
-        btn.onclick = function () { table.removeChild(row); };
-        cellBtn.appendChild(btn);
-        row.appendChild(cellDes);
-        row.appendChild(cellVal);
-        row.appendChild(cellBtn);
-        table.appendChild(row);
+
+        var badge = document.createElement('span');
+        badge.className = 'sc-type-badge ' + typeDef.color;
+        badge.textContent = typeDef.label;
+
+        var desInput = document.createElement('input');
+        desInput.className = 'sc-designator-input';
+        desInput.value = SC.submit._nextDesignator(prefix);
+        desInput.placeholder = prefix ? prefix + '1' : 'X1';
+
+        var valInput = document.createElement('input');
+        valInput.className = 'sc-value-input';
+        valInput.placeholder = typeDef.hint;
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'sc-remove-btn';
+        removeBtn.textContent = '×';
+        removeBtn.onclick = function () {
+            list.removeChild(row);
+            if (list.children.length === 0 && empty) { empty.style.display = ''; }
+        };
+
+        row.appendChild(badge);
+        row.appendChild(desInput);
+        row.appendChild(valInput);
+        row.appendChild(removeBtn);
+        list.appendChild(row);
+        setTimeout(function () { valInput.focus(); }, 0);
     },
 
     _collectParts: function () {
@@ -88,15 +120,17 @@ SC.submit = {
                 return { ok: false, error: 'Invalid JSON: ' + e.message };
             }
         }
-        var table = document.getElementById('parts-rows-table');
-        var rows  = table.querySelectorAll('.sc-parts-row:not(:first-child)');
+        var list = document.getElementById('parts-rows-list');
+        var rows = list ? list.querySelectorAll('.sc-parts-row') : [];
         var parts = {};
         var hasAny = false;
         rows.forEach(function (row) {
-            var inputs = row.querySelectorAll('input');
-            var des = inputs[0].value.trim();
-            var val = inputs[1].value.trim();
-            if (des && val) { parts[des] = val; hasAny = true; }
+            var des = row.querySelector('.sc-designator-input');
+            var val = row.querySelector('.sc-value-input');
+            if (des && val && des.value.trim() && val.value.trim()) {
+                parts[des.value.trim()] = val.value.trim();
+                hasAny = true;
+            }
         });
         if (!hasAny) { return { ok: false, error: 'Add at least one component.' }; }
         return { ok: true, parts: parts };
@@ -159,7 +193,6 @@ SC.submit = {
         var closeBtn  = document.getElementById('submit-modal-close');
         var cancelBtn = document.getElementById('submit-modal-cancel');
         var sendBtn   = document.getElementById('submit-modal-send');
-        var addRow    = document.getElementById('parts-add-row');
         var tabRows   = document.getElementById('parts-tab-rows');
         var tabJson   = document.getElementById('parts-tab-json');
         var overlay   = document.getElementById('submit-modal-overlay');
@@ -168,7 +201,6 @@ SC.submit = {
         if (closeBtn)  { closeBtn.onclick  = SC.submit.close; }
         if (cancelBtn) { cancelBtn.onclick = SC.submit.close; }
         if (sendBtn)   { sendBtn.onclick   = SC.submit.send; }
-        if (addRow)    { addRow.onclick    = SC.submit._addPartRow; }
         if (tabRows)   { tabRows.onclick   = function () { SC.submit._switchTab('rows'); }; }
         if (tabJson)   { tabJson.onclick   = function () { SC.submit._switchTab('json'); }; }
         if (overlay) {
@@ -176,7 +208,15 @@ SC.submit = {
                 if (e.target === overlay) { SC.submit.close(); }
             });
         }
-        SC.submit._addPartRow();
-        SC.submit._addPartRow();
+        var typePicker = document.getElementById('parts-type-picker');
+        if (typePicker) {
+            typePicker.querySelectorAll('.sc-type-btn').forEach(function (btn) {
+                btn.onclick = function () {
+                    var prefix  = btn.dataset.prefix;
+                    var typeDef = SC.submit._TYPES[prefix] || SC.submit._TYPES[''];
+                    SC.submit._addComponent(prefix, typeDef);
+                };
+            });
+        }
     }
 };

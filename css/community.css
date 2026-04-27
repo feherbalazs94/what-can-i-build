@@ -177,23 +177,63 @@
 .sc-tab:not(:last-child) { border-right: 1px solid #1e2d3d; }
 .sc-tab.active { background: #818cf8; color: #0f0f23; }
 
-/* parts row table */
-.sc-parts-table { background: #060b14; border: 1px solid #1e2d3d; border-radius: 7px; overflow: hidden; }
-.sc-parts-row   { display: grid; grid-template-columns: 90px 1fr 28px; border-bottom: 1px solid #1e2d3d; align-items: center; }
-.sc-parts-row:last-child { border-bottom: none; }
-.sc-parts-cell  { padding: 6px 8px; font-size: 12px; border-right: 1px solid #1e2d3d; }
-.sc-parts-cell:last-child { border-right: none; text-align: center; }
-.sc-parts-cell.header { font-size: 10px; color: #475569; text-transform: uppercase; background: #0d1117; font-weight: 600; }
-.sc-parts-cell input  { background: none; border: none; color: #e2e8f0; font-size: 12px; width: 100%; outline: none; font-family: 'Share Tech Mono', monospace; }
-.sc-parts-cell input::placeholder { color: #475569; }
-.sc-remove-btn { background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; }
-.sc-remove-btn:hover { color: #f87171; }
-.sc-add-part-btn {
-  background: none; border: 1px dashed #1e2d3d; border-radius: 6px;
-  color: #475569; font-size: 12px; padding: 7px; cursor: pointer;
-  width: 100%; text-align: center; margin-top: 6px; font-family: inherit;
+/* type picker */
+.sc-type-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.sc-type-btn {
+  padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: 'Share Tech Mono', monospace; border: 1px solid transparent;
+  transition: opacity 0.1s, transform 0.1s;
 }
-.sc-add-part-btn:hover { border-color: #818cf8; color: #818cf8; }
+.sc-type-btn:active { transform: scale(0.95); }
+.sc-type-btn.resistor   { background: rgba(251,191,36,0.12);  color: #fbbf24; border-color: rgba(251,191,36,0.3);  }
+.sc-type-btn.capacitor  { background: rgba(129,140,248,0.12); color: #818cf8; border-color: rgba(129,140,248,0.3); }
+.sc-type-btn.pot        { background: rgba(74,222,128,0.12);  color: #4ade80; border-color: rgba(74,222,128,0.3);  }
+.sc-type-btn.transistor { background: rgba(248,113,113,0.12); color: #f87171; border-color: rgba(248,113,113,0.3); }
+.sc-type-btn.diode      { background: rgba(125,211,252,0.12); color: #7dd3fc; border-color: rgba(125,211,252,0.3); }
+.sc-type-btn.ic         { background: rgba(167,139,250,0.12); color: #a78bfa; border-color: rgba(167,139,250,0.3); }
+.sc-type-btn.sw         { background: rgba(45,212,191,0.12);  color: #2dd4bf; border-color: rgba(45,212,191,0.3);  }
+.sc-type-btn.other      { background: rgba(71,85,105,0.12);   color: #94a3b8; border-color: rgba(71,85,105,0.3);   }
+
+/* parts rows */
+.sc-parts-row {
+  display: grid;
+  grid-template-columns: 80px 70px 1fr 28px;
+  gap: 0;
+  border-bottom: 1px solid #1e2d3d;
+  align-items: center;
+  background: #060b14;
+}
+#parts-rows-list { border: 1px solid #1e2d3d; border-radius: 7px; overflow: hidden; }
+#parts-rows-list:empty { display: none; }
+.sc-parts-row:last-child { border-bottom: none; }
+
+.sc-type-badge {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 0 8px; height: 100%; display: flex; align-items: center;
+  border-right: 1px solid #1e2d3d;
+}
+.sc-type-badge.resistor   { color: #fbbf24; background: rgba(251,191,36,0.08);  }
+.sc-type-badge.capacitor  { color: #818cf8; background: rgba(129,140,248,0.08); }
+.sc-type-badge.pot        { color: #4ade80; background: rgba(74,222,128,0.08);  }
+.sc-type-badge.transistor { color: #f87171; background: rgba(248,113,113,0.08); }
+.sc-type-badge.diode      { color: #7dd3fc; background: rgba(125,211,252,0.08); }
+.sc-type-badge.ic         { color: #a78bfa; background: rgba(167,139,250,0.08); }
+.sc-type-badge.sw         { color: #2dd4bf; background: rgba(45,212,191,0.08);  }
+.sc-type-badge.other      { color: #94a3b8; background: rgba(71,85,105,0.08);   }
+
+.sc-designator-input, .sc-value-input {
+  background: none; border: none; border-right: 1px solid #1e2d3d;
+  color: #e2e8f0; font-size: 12px; padding: 7px 8px; width: 100%;
+  outline: none; font-family: 'Share Tech Mono', monospace; box-sizing: border-box;
+}
+.sc-designator-input:focus, .sc-value-input:focus { background: rgba(129,140,248,0.04); }
+.sc-value-input { border-right: none; }
+.sc-designator-input::placeholder, .sc-value-input::placeholder { color: #475569; }
+
+.sc-remove-btn { background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; text-align: center; }
+.sc-remove-btn:hover { color: #f87171; }
+
+.sc-parts-empty { font-size: 11px; color: #475569; text-align: center; padding: 14px; border: 1px dashed #1e2d3d; border-radius: 7px; margin-top: 4px; }
 
 .sc-json-textarea {
   background: #060b14; border: 1px solid #1e2d3d; border-radius: 7px;

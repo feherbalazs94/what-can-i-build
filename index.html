@@ -475,14 +475,18 @@
               <button class="sc-tab"        id="parts-tab-json">Paste JSON</button>
             </div>
             <div id="parts-panel-rows">
-              <div class="sc-parts-table" id="parts-rows-table">
-                <div class="sc-parts-row">
-                  <div class="sc-parts-cell header">Designator</div>
-                  <div class="sc-parts-cell header">Value</div>
-                  <div class="sc-parts-cell header"></div>
-                </div>
+              <div class="sc-type-picker" id="parts-type-picker">
+                <button class="sc-type-btn resistor"   data-type="Resistor"   data-prefix="R" >R · Resistor</button>
+                <button class="sc-type-btn capacitor"  data-type="Capacitor"  data-prefix="C" >C · Capacitor</button>
+                <button class="sc-type-btn pot"        data-type="Pot"        data-prefix="P" >P · Pot</button>
+                <button class="sc-type-btn transistor" data-type="Transistor" data-prefix="Q" >Q · Transistor</button>
+                <button class="sc-type-btn diode"      data-type="Diode"      data-prefix="D" >D · Diode</button>
+                <button class="sc-type-btn ic"         data-type="IC"         data-prefix="U" >U · IC</button>
+                <button class="sc-type-btn sw"         data-type="Switch"     data-prefix="SW">SW · Switch</button>
+                <button class="sc-type-btn other"      data-type="Other"      data-prefix=""  >· Other</button>
               </div>
-              <button class="sc-add-part-btn" id="parts-add-row">+ Add component</button>
+              <div id="parts-rows-list"></div>
+              <div class="sc-parts-empty" id="parts-rows-empty">Click a type above to add components</div>
             </div>
             <div id="parts-panel-json" style="display:none">
               <textarea class="sc-json-textarea" id="parts-json-input" placeholder='{"C1": "100n", "R1": "10k", "Q1": "BC549C"}'></textarea>
