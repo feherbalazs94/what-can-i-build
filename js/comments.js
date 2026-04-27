@@ -11,7 +11,7 @@ SC.comments = {
         var sub     = document.getElementById('comments-modal-circuit');
         if (!overlay) { return; }
 
-        title.textContent = '💬 Comments';
+        title.textContent = '💬 Tone Talk';
         sub.textContent   = circuitName;
         overlay.classList.add('open');
         overlay.dataset.circuitId  = circuitId;
@@ -40,11 +40,11 @@ SC.comments = {
             .then(function (result) {
                 list.textContent = '';
                 if (result.error) {
-                    list.textContent = 'Could not load comments.';
+                    list.textContent = 'Couldn\'t load the chatter. Try again.';
                     return;
                 }
                 if (!result.data || result.data.length === 0) {
-                    list.innerHTML = '<div style="color:#475569;font-size:12px;text-align:center;padding:20px 0">No comments yet. Be the first!</div>';
+                    list.innerHTML = '<div style="color:#475569;font-size:12px;text-align:center;padding:20px 0">No tone talk yet. Drop the first note.</div>';
                     SC.comments._updateCount(circuitId, 0);
                     return;
                 }
@@ -157,7 +157,7 @@ SC.comments = {
         box.innerHTML = '';
 
         if (!SC.auth.user) {
-            box.innerHTML = '<div class="sc-comment-signed-out">Sign in to join the discussion. <a id="comments-signin-link">Sign in →</a></div>';
+            box.innerHTML = '<div class="sc-comment-signed-out">Sign in to join the tone talk. <a id="comments-signin-link">Sign in →</a></div>';
             var link = document.getElementById('comments-signin-link');
             if (link) { link.onclick = function () { SC.comments.close(); SC.auth.openModal(); }; }
             return;
@@ -167,7 +167,7 @@ SC.comments = {
         wrap.className = 'sc-new-comment-box';
         var textarea = document.createElement('textarea');
         textarea.className = 'sc-new-comment-input';
-        textarea.placeholder = parentId ? 'Write a reply…' : 'Add a comment…';
+        textarea.placeholder = parentId ? 'Add your two cents…' : 'Share your build notes, mods, tips…';
         var footer   = document.createElement('div');
         footer.style.cssText = 'display:flex;justify-content:flex-end;gap:8px';
         if (parentId) {

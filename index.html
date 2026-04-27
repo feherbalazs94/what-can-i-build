@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>What can I build</title>
+    <title>What can I build — Guitar Pedal Parts Matcher</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -56,42 +56,42 @@
 
         <div class="welcome-logo">⚡</div>
 
-        <h1>What can I <em>build</em>?</h1>
+        <h1>What can I <em>solder</em>?</h1>
         <p class="tagline">
-          Enter the electronic parts you own and instantly discover
-          which guitar pedal circuits you can build right now.
+          Dump your parts bin into the sidebar.
+          We'll tell you which pedal circuits are ready to build — right now, with what you've got.
         </p>
 
         <div class="welcome-steps">
           <div class="welcome-step">
             <div class="step-num">1</div>
-            <span class="step-icon">🗂</span>
-            <span class="step-title">Enter your parts</span>
-            <span class="step-desc">Tell us how many resistors, capacitors, transistors and more you have on hand.</span>
+            <span class="step-icon">📦</span>
+            <span class="step-title">Raid your parts bin</span>
+            <span class="step-desc">Resistors, caps, transistors — tell us what's rolling around in your drawer.</span>
           </div>
           <div class="welcome-step">
             <div class="step-num">2</div>
             <span class="step-icon">✅</span>
-            <span class="step-title">See exact matches</span>
-            <span class="step-desc">Circuits you can build right now — no missing parts, no substitutions needed.</span>
+            <span class="step-title">Find your builds</span>
+            <span class="step-desc">Circuits you can build right now — no missing parts, no desperate Mouser orders.</span>
           </div>
           <div class="welcome-step">
             <div class="step-num">3</div>
             <span class="step-icon">✨</span>
-            <span class="step-title">Almost there?</span>
-            <span class="step-desc">See circuits missing just 1–3 parts so you know exactly what to order next.</span>
+            <span class="step-title">One shopping trip away</span>
+            <span class="step-desc">Spot circuits missing just 1–3 parts so you know exactly what to grab next.</span>
           </div>
         </div>
 
         <div class="welcome-actions">
           <button class="welcome-btn-primary" id="welcome-start">
-            Start entering parts →
+            Let's see what I can build →
           </button>
 
           <div class="welcome-divider">or</div>
 
           <button class="welcome-btn-secondary" id="welcome-signin">
-            Sign in to restore a saved parts list
+            Sign in to restore my saved stash
           </button>
         </div>
 
@@ -104,11 +104,11 @@
         <button class="auth-modal-close" id="auth-modal-close">✕</button>
         <span class="auth-modal-icon">✉️</span>
         <h2>Sign in</h2>
-        <p>Enter your email and we'll send you a magic link — no password needed. Your parts list will sync across all your devices.</p>
+        <p>Drop your email and we'll send a magic link — no password, no fuss. Your stash syncs across all your devices.</p>
         <input type="email" id="auth-email-input" placeholder="you@example.com" autocomplete="email" />
         <button id="auth-modal-send">Send magic link</button>
         <div class="auth-status" id="auth-modal-status"></div>
-        <p class="auth-note">We only store your parts inventory. No spam, ever.</p>
+        <p class="auth-note">We only store your parts stash. No spam, ever.</p>
       </div>
     </div>
 
@@ -116,19 +116,19 @@
     <nav id="sidebar">
 
         <div class="sidebar-title">
-            <h1>What do I have</h1>
+            <h1>My Parts Bin</h1>
             <button id="sidebar-toggle" title="Collapse sidebar"><span class="toggle-arrow">‹</span></button>
         </div>
 
         <!-- Guided setup relaunch -->
-        <button id="onboarding-btn" class="sidebar-onboarding-btn">◈ Guided Setup</button>
+        <button id="onboarding-btn" class="sidebar-onboarding-btn">◈ Setup Wizard</button>
 
         <!-- Save-to-account banner (shown when user has parts but isn't signed in) -->
         <div id="sync-banner" role="button" tabindex="0">
           <span class="banner-icon">☁️</span>
           <span class="banner-text">
-            <strong>Save your parts list</strong>
-            Sign in to sync across devices
+            <strong>Save your stash</strong>
+            Sign in to sync your bench across devices
           </span>
           <span class="banner-arrow">→</span>
         </div>
@@ -317,32 +317,32 @@
     <main>
 
         <div id="circuits-loading" style="padding: 2rem; color: #475569; font-size: 13px;">
-          Loading circuits…
+          Rummaging through the parts bin…
         </div>
 
         <div class="topbar">
-            <h1>What can I build</h1>
+            <h1>What can I solder?</h1>
             <span id="badge_ready" class="badge badge-green">✓ 0 ready</span>
             <span id="badge_almost" class="badge badge-indigo">✦ 0 almost</span>
             <span id="total_count" style="display:none"></span>
             <div class="filters">
                 <label title="Show circuits where you don't have exact part, but you have alternative parts that circuit allows as substitutions">
-                    <input id="filter_show_subs" type="checkbox" checked><span>with substitution</span>
+                    <input id="filter_show_subs" type="checkbox" checked><span>subs ok</span>
                 </label>
                 <label title="Only show circuits you've already built in the table (regardless of their possibility)">
-                    <input id="filter_show_done" type="checkbox"><span>done</span>
+                    <input id="filter_show_done" type="checkbox"><span>built</span>
                 </label>
             </div>
             <!-- Auth widget (sign in / avatar) -->
-            <button class="submit-layout-btn" id="submit-layout-btn">+ Submit layout</button>
+            <button class="submit-layout-btn" id="submit-layout-btn">+ Add a layout</button>
             <a class="admin-link" id="admin-link" href="admin.html" style="display:none">⚙ Admin</a>
             <div class="auth-widget" id="auth-widget"></div>
         </div>
 
         <div class="section-header">
             <span>✅</span>
-            <h1 class="green">What I Can Build</h1>
-            <span class="section-count" id="count_ready">0 circuits — you have all the parts</span>
+            <h1 class="green">Ready to Solder</h1>
+            <span class="section-count" id="count_ready">0 circuits — all parts in hand</span>
         </div>
         <div class="section-divider"></div>
 
@@ -364,8 +364,8 @@
         <div class="almost-divider">
             <div class="section-header">
                 <span>✨</span>
-                <h1 class="indigo">What I Could Build</h1>
-                <span class="section-count" id="count_almost">0 circuits — missing 1–3 parts</span>
+                <h1 class="indigo">Almost There</h1>
+                <span class="section-count" id="count_almost">0 circuits — just a few parts short</span>
             </div>
             <div class="section-divider"></div>
         </div>
@@ -386,7 +386,7 @@
         </table>
 
         <div id="nothing" style="margin-top: 1ex; display: none;">
-        Nothing to show. Try entering some parts in the sidebar.</div>
+        Nothing yet — toss some parts into the bin on the left.</div>
 
     </main>
 
@@ -421,7 +421,7 @@
           <span class="ob-tip-bolt">→</span>
           <div class="ob-tip-body">
             <span class="ob-tip-headline">Start with 10 of each</span>
-            <span class="ob-tip-sub">Click to fill every value in this category with 10</span>
+            <span class="ob-tip-sub">Got a stash? Fill every value in this category with 10</span>
           </div>
           <span class="ob-tip-cta">Fill all ×10</span>
         </button>
@@ -441,7 +441,7 @@
     <div class="sc-modal-overlay" id="submit-modal-overlay">
       <div class="sc-modal">
         <div class="sc-modal-header">
-          <h3>+ Submit layout</h3>
+          <h3>+ Add a Layout</h3>
           <button class="sc-modal-close" id="submit-modal-close">✕</button>
         </div>
         <div class="sc-modal-body">
@@ -486,7 +486,7 @@
                 <button class="sc-type-btn other"      data-type="Other"      data-prefix=""  >· Other</button>
               </div>
               <div id="parts-rows-list"></div>
-              <div class="sc-parts-empty" id="parts-rows-empty">Click a type above to add components</div>
+              <div class="sc-parts-empty" id="parts-rows-empty">Pick a part type above to start building your list</div>
             </div>
             <div id="parts-panel-json" style="display:none">
               <textarea class="sc-json-textarea" id="parts-json-input" placeholder='{"C1": "100n", "R1": "10k", "Q1": "BC549C"}'></textarea>
@@ -508,7 +508,7 @@
       <div class="sc-modal">
         <div class="sc-modal-header">
           <div>
-            <h3 id="comments-modal-title">💬 Comments</h3>
+            <h3 id="comments-modal-title">💬 Tone Talk</h3>
             <div style="font-size:11px;color:#475569" id="comments-modal-circuit"></div>
           </div>
           <button class="sc-modal-close" id="comments-modal-close">✕</button>

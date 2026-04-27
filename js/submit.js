@@ -109,7 +109,7 @@ SC.submit = {
         var jsonPanel = document.getElementById('parts-panel-json');
         if (jsonPanel.style.display !== 'none') {
             var raw = document.getElementById('parts-json-input').value.trim();
-            if (!raw) { return { ok: false, error: 'Parts list is required.' }; }
+            if (!raw) { return { ok: false, error: 'Paste your parts list, JSON wizard.' }; }
             try {
                 var parsed = JSON.parse(raw);
                 if (typeof parsed !== 'object' || Array.isArray(parsed)) {
@@ -132,7 +132,7 @@ SC.submit = {
                 hasAny = true;
             }
         });
-        if (!hasAny) { return { ok: false, error: 'Add at least one component.' }; }
+        if (!hasAny) { return { ok: false, error: 'Add at least one part — even a blank pedal needs a resistor.' }; }
         return { ok: true, parts: parts };
     },
 
@@ -142,7 +142,7 @@ SC.submit = {
         var sendBtn  = document.getElementById('submit-modal-send');
         var name = nameEl ? nameEl.value.trim() : '';
         if (!name) {
-            statusEl.textContent = 'Circuit name is required.';
+            statusEl.textContent = 'Give it a name, tone chaser.';
             statusEl.className = 'sc-status error';
             return;
         }
@@ -153,7 +153,7 @@ SC.submit = {
             return;
         }
         sendBtn.disabled = true;
-        sendBtn.textContent = 'Submitting…';
+        sendBtn.textContent = 'Sending it in…';
         statusEl.textContent = '';
         statusEl.className = 'sc-status';
 
@@ -181,7 +181,7 @@ SC.submit = {
                 statusEl.textContent = 'Error: ' + result.error.message;
                 statusEl.className = 'sc-status error';
             } else {
-                statusEl.textContent = '✓ Submitted! We\'ll review it shortly.';
+                statusEl.textContent = '🎸 Submitted! We\'ll check it out soon.';
                 statusEl.className = 'sc-status success';
                 setTimeout(SC.submit.close, 2000);
             }
