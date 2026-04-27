@@ -373,3 +373,64 @@
   background: #fbbf24; color: #0f0f23; border-radius: 99px;
   padding: 1px 8px; font-size: 10px; font-weight: 700; margin-left: 4px;
 }
+
+/* ── Layout image thumbnail ──────────────────────────────────────────────────── */
+.layout-thumb {
+  display: block;
+  width: 100%;
+  max-width: 140px;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #1e2d3d;
+  margin-bottom: 6px;
+  cursor: zoom-in;
+  object-fit: cover;
+}
+.layout-thumb:hover { border-color: #4ade80; opacity: 0.9; }
+
+/* ── Layout image lightbox ───────────────────────────────────────────────────── */
+#layout-img-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.85);
+  align-items: center; justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+}
+.layout-img-box {
+  position: relative;
+  max-width: 90vw; max-height: 90vh;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  cursor: default;
+}
+#layout-img-full {
+  max-width: 100%; max-height: 82vh;
+  border-radius: 6px;
+  border: 1px solid #1e2d3d;
+  object-fit: contain;
+}
+#layout-img-caption {
+  color: #94a3b8; font-size: 12px; text-align: center;
+}
+.layout-img-close {
+  position: absolute; top: -14px; right: -14px;
+  background: #1e293b; border: 1px solid #334155; color: #94a3b8;
+  border-radius: 50%; width: 28px; height: 28px;
+  font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.layout-img-close:hover { color: #e2e8f0; border-color: #64748b; }
+
+/* ── YouTube embed ───────────────────────────────────────────────────────────── */
+.yt-embed-wrap {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 6px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #1e2d3d;
+}
+.yt-embed {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+}

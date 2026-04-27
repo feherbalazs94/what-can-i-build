@@ -26,6 +26,48 @@ SC.renderUrl = function (aContainer, aIcon, aUrl) {
     aContainer.appendChild(a);
 };
 
+SC._youtubeId = function (url) {
+    if (!url) { return null; }
+    var m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : null;
+};
+
+SC.renderLayoutThumb = function (aCircuit) {
+    if (!aCircuit.url_image) { return null; }
+    var img = document.createElement('img');
+    img.src = aCircuit.url_image;
+    img.className = 'layout-thumb';
+    img.alt = aCircuit.name + ' layout';
+    img.loading = 'lazy';
+    img.title = 'View layout';
+    img.onclick = function () {
+        var overlay = document.getElementById('layout-img-overlay');
+        var el = document.getElementById('layout-img-full');
+        var cap = document.getElementById('layout-img-caption');
+        if (overlay && el) {
+            el.src = aCircuit.url_image;
+            if (cap) { cap.textContent = aCircuit.name; }
+            overlay.style.display = 'flex';
+        }
+    };
+    return img;
+};
+
+SC.renderDemoEmbed = function (aCircuit) {
+    var ytId = SC._youtubeId(aCircuit.url && aCircuit.url.demo);
+    if (!ytId) { return null; }
+    var wrap = document.createElement('div');
+    wrap.className = 'yt-embed-wrap';
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube.com/embed/' + ytId;
+    iframe.className = 'yt-embed';
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    wrap.appendChild(iframe);
+    return wrap;
+};
+
 SC.complexity = function (aCircuit) {
     // Return summary of circuit complexity, e.g.  6: 2C 1D 1P 1R 1T
     var u = {}, k, prefix, arr = [], t = 0;
@@ -102,18 +144,22 @@ SC.renderCommentsBtn = function (aKey, aCircuit) {
 
 SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "can build" section
-    var tr, td, linksDiv, w, k, b, span, lc;
+    var tr, td, linksDiv, thumb, ytEmbed, w, k, b, span, lc;
     tr = document.createElement('tr');
     tr.dataset.circuitKey = aKey;
     // links
     td = document.createElement('td');
     linksDiv = document.createElement('div');
     linksDiv.className = 'links';
+    thumb = SC.renderLayoutThumb(aCircuit);
+    if (thumb) { linksDiv.appendChild(thumb); }
     for (k in aCircuit.url) {
         if (aCircuit.url.hasOwnProperty(k)) {
             SC.renderUrl(linksDiv, k, aCircuit.url[k]);
         }
     }
+    ytEmbed = SC.renderDemoEmbed(aCircuit);
+    if (ytEmbed) { linksDiv.appendChild(ytEmbed); }
     td.appendChild(linksDiv);
     tr.appendChild(td);
     // name + author
@@ -171,18 +217,22 @@ SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
 
 SC.renderAlmost = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "almost" section — shows missing part chips
-    var tr, td, linksDiv, missingDiv, chip, w, k, b, span, lc, i;
+    var tr, td, linksDiv, thumb, ytEmbed, missingDiv, chip, w, k, b, span, lc, i;
     tr = document.createElement('tr');
     tr.dataset.circuitKey = aKey;
     // links
     td = document.createElement('td');
     linksDiv = document.createElement('div');
     linksDiv.className = 'links';
+    thumb = SC.renderLayoutThumb(aCircuit);
+    if (thumb) { linksDiv.appendChild(thumb); }
     for (k in aCircuit.url) {
         if (aCircuit.url.hasOwnProperty(k)) {
             SC.renderUrl(linksDiv, k, aCircuit.url[k]);
         }
     }
+    ytEmbed = SC.renderDemoEmbed(aCircuit);
+    if (ytEmbed) { linksDiv.appendChild(ytEmbed); }
     td.appendChild(linksDiv);
     tr.appendChild(td);
     // name + author + missing chips

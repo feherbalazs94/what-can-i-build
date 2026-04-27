@@ -503,6 +503,15 @@
       </div>
     </div>
 
+    <!-- ══ Layout image lightbox ══════════════════════════════════════ -->
+    <div id="layout-img-overlay" style="display:none" onclick="if(event.target===this){this.style.display='none';}">
+      <div class="layout-img-box">
+        <button class="layout-img-close" onclick="document.getElementById('layout-img-overlay').style.display='none'">✕</button>
+        <img id="layout-img-full" src="" alt="" />
+        <div id="layout-img-caption"></div>
+      </div>
+    </div>
+
     <!-- ══ Comments modal ══════════════════════════════════════════════ -->
     <div class="sc-modal-overlay" id="comments-modal-overlay">
       <div class="sc-modal">

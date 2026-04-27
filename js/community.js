@@ -16,6 +16,7 @@ SC._parseCircuitRows = function (rows) {
             author:       row.author || '',
             submitted_by: row.submitted_by,
             vote_score:   row.vote_score || 0,
+            url_image:    row.url_image  || '',
             url: {
                 schematic:  row.url_schematic  || '',
                 stripboard: row.url_stripboard || '',
@@ -33,7 +34,7 @@ SC._parseCircuitRows = function (rows) {
 SC._fetchAndCacheCircuits = function (client) {
     return client
         .from('circuits')
-        .select('id, key, name, author, url_schematic, url_stripboard, url_perfboard, url_pcb, url_tagboard, url_pedal, url_demo, parts, status, submitted_by, vote_score')
+        .select('id, key, name, author, url_schematic, url_stripboard, url_perfboard, url_pcb, url_tagboard, url_pedal, url_demo, url_image, parts, status, submitted_by, vote_score')
         .eq('status', 'approved')
         .then(function (result) {
             if (result.error) {
