@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin — What can I build</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;700&family=Share+Tech+Mono&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="image/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/index.css?version=276" type="text/css" />
+    <link rel="stylesheet" href="css/community.css?version=276" type="text/css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script type="text/javascript" src="js/config.js?version=276"></script>
+    <script type="text/javascript" src="js/auth.js?version=276"></script>
+    <script type="text/javascript" src="js/admin.js?version=276"></script>
+  </head>
+  <body>
+    <div class="topbar" style="margin-bottom:0">
+      <h1 style="font-size:16px">⚙ Admin — Moderation</h1>
+      <a href="index.html" style="color:#475569;font-size:12px;margin-left:auto">← Back to app</a>
+      <div class="auth-widget" id="auth-widget"></div>
+    </div>
+
+    <div class="admin-shell">
+      <div id="admin-access-denied" style="display:none;padding:40px;text-align:center;color:#f87171">
+        Access denied. You need admin privileges to view this page.
+        <br><br><a href="index.html" style="color:#818cf8">← Go back</a>
+      </div>
+
+      <div id="admin-content" style="display:none">
+        <div class="admin-tab-bar">
+          <button class="admin-tab active" data-tab="pending">Pending <span class="admin-pending-badge" id="pending-badge">0</span></button>
+          <button class="admin-tab" data-tab="approved">Approved</button>
+          <button class="admin-tab" data-tab="rejected">Rejected</button>
+          <button class="admin-tab" data-tab="admins">Manage Admins</button>
+        </div>
+
+        <div class="admin-tab-panel active" id="panel-pending">
+          <div id="pending-list"></div>
+        </div>
+
+        <div class="admin-tab-panel" id="panel-approved">
+          <div id="approved-list"></div>
+        </div>
+
+        <div class="admin-tab-panel" id="panel-rejected">
+          <div id="rejected-list"></div>
+        </div>
+
+        <div class="admin-tab-panel" id="panel-admins">
+          <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
+            <input class="sc-input" id="grant-email-input" placeholder="user@email.com" style="max-width:280px" />
+            <button class="sc-btn-primary" id="grant-admin-btn">Grant admin</button>
+          </div>
+          <div class="sc-status" id="grant-status" style="margin-top:8px"></div>
+          <div id="admins-list" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        SC.auth.init();
+        var checked = false;
+        var checkAdmin = function () {
+          if (checked) { return; }
+          checked = true;
+          SC.admin.checkAccessAndInit();
+        };
+        setTimeout(checkAdmin, 800);
+        SC.auth.client.auth.onAuthStateChange(function () { checkAdmin(); });
+      });
+    </script>
+  </body>
+</html>
