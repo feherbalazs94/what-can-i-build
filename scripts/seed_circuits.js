@@ -27,12 +27,12 @@ var files = fs.readdirSync(circuitDir).filter(function (f) {
 });
 
 var rows = files.map(function (filename) {
-    var key = filename.replace('.json', '');
+    var key = path.basename(filename, '.json');
     var data = JSON.parse(fs.readFileSync(path.join(circuitDir, filename), 'utf8'));
     var url = data.url || {};
     return {
         key: key,
-        name: data.name,
+        name: data.name || null,
         author: data.author || null,
         url_schematic:  url.schematic  || null,
         url_stripboard: url.stripboard || null,
