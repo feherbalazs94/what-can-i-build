@@ -53,19 +53,31 @@ SC.renderLayoutThumb = function (aCircuit) {
     return img;
 };
 
-SC.renderDemoEmbed = function (aCircuit) {
+SC.openDemoPopup = function (ytId, circuitName) {
+    var overlay = document.getElementById('demo-popup-overlay');
+    var iframe  = document.getElementById('demo-popup-iframe');
+    var caption = document.getElementById('demo-popup-caption');
+    if (!overlay || !iframe) { return; }
+    iframe.src = 'https://www.youtube.com/embed/' + ytId + '?autoplay=1';
+    if (caption) { caption.textContent = circuitName; }
+    overlay.style.display = 'flex';
+};
+
+SC.closeDemoPopup = function () {
+    var overlay = document.getElementById('demo-popup-overlay');
+    var iframe  = document.getElementById('demo-popup-iframe');
+    if (iframe) { iframe.src = ''; }  // stop playback
+    if (overlay) { overlay.style.display = 'none'; }
+};
+
+SC.renderDemoBtn = function (aCircuit) {
     var ytId = SC._youtubeId(aCircuit.url && aCircuit.url.demo);
     if (!ytId) { return null; }
-    var wrap = document.createElement('div');
-    wrap.className = 'yt-embed-wrap';
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube.com/embed/' + ytId;
-    iframe.className = 'yt-embed';
-    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-    iframe.allowFullscreen = true;
-    iframe.loading = 'lazy';
-    wrap.appendChild(iframe);
-    return wrap;
+    var btn = document.createElement('button');
+    btn.className = 'demo-popup-btn';
+    btn.innerHTML = '▶ Demo';
+    btn.onclick = function () { SC.openDemoPopup(ytId, aCircuit.name); };
+    return btn;
 };
 
 SC.complexity = function (aCircuit) {
@@ -144,7 +156,7 @@ SC.renderCommentsBtn = function (aKey, aCircuit) {
 
 SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "can build" section
-    var tr, td, linksDiv, thumb, ytEmbed, w, k, b, span, lc;
+    var tr, td, linksDiv, thumb, demoBtn, w, k, b, span, lc;
     tr = document.createElement('tr');
     tr.dataset.circuitKey = aKey;
     // links
@@ -154,12 +166,12 @@ SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
     thumb = SC.renderLayoutThumb(aCircuit);
     if (thumb) { linksDiv.appendChild(thumb); }
     for (k in aCircuit.url) {
-        if (aCircuit.url.hasOwnProperty(k)) {
+        if (aCircuit.url.hasOwnProperty(k) && k !== 'demo') {
             SC.renderUrl(linksDiv, k, aCircuit.url[k]);
         }
     }
-    ytEmbed = SC.renderDemoEmbed(aCircuit);
-    if (ytEmbed) { linksDiv.appendChild(ytEmbed); }
+    demoBtn = SC.renderDemoBtn(aCircuit);
+    if (demoBtn) { linksDiv.appendChild(demoBtn); }
     td.appendChild(linksDiv);
     tr.appendChild(td);
     // name + author
@@ -217,7 +229,7 @@ SC.renderOne = function (aKey, aCircuit, aErrors, aWarnings) {
 
 SC.renderAlmost = function (aKey, aCircuit, aErrors, aWarnings) {
     // Render one circuit row for the "almost" section — shows missing part chips
-    var tr, td, linksDiv, thumb, ytEmbed, missingDiv, chip, w, k, b, span, lc, i;
+    var tr, td, linksDiv, thumb, demoBtn, missingDiv, chip, w, k, b, span, lc, i;
     tr = document.createElement('tr');
     tr.dataset.circuitKey = aKey;
     // links
@@ -227,12 +239,12 @@ SC.renderAlmost = function (aKey, aCircuit, aErrors, aWarnings) {
     thumb = SC.renderLayoutThumb(aCircuit);
     if (thumb) { linksDiv.appendChild(thumb); }
     for (k in aCircuit.url) {
-        if (aCircuit.url.hasOwnProperty(k)) {
+        if (aCircuit.url.hasOwnProperty(k) && k !== 'demo') {
             SC.renderUrl(linksDiv, k, aCircuit.url[k]);
         }
     }
-    ytEmbed = SC.renderDemoEmbed(aCircuit);
-    if (ytEmbed) { linksDiv.appendChild(ytEmbed); }
+    demoBtn = SC.renderDemoBtn(aCircuit);
+    if (demoBtn) { linksDiv.appendChild(demoBtn); }
     td.appendChild(linksDiv);
     tr.appendChild(td);
     // name + author + missing chips
