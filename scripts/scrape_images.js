@@ -34,42 +34,34 @@ var client = supabaseJs.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
 
 // ── Image extraction ──────────────────────────────────────────────────────────
 
-// Blogspot images live on Google CDN. Older format: N.bp.blogspot.com.
-// Newer format: lh3.googleusercontent.com (Blogger switched around 2021).
-// Both are safe to hotlink from an <img> tag.
-var GOOGLE_IMG_RE = /src="(https?:\/\/(?:\d+\.bp\.blogspot\.com|lh\d+\.googleusercontent\.com)\/[^"]+)"/gi;
+// Blogger image CDN patterns:
+//   - blogger.googleusercontent.com  (current Blogger CDN, most common)
+//   - N.bp.blogspot.com              (older Blogger CDN)
+//   - lh*.googleusercontent.com      (Google Photos / older Blogger)
+var BLOGGER_CDN_RE = /(?:blogger\.googleusercontent\.com|lh\d+\.googleusercontent\.com|\d+\.bp\.blogspot\.com)/;
 
 function extractImageUrl(html) {
-    // Narrow to the post body so we skip header/sidebar images
-    var bodyStart = html.indexOf('class="post-body"');
-    if (bodyStart === -1) bodyStart = html.indexOf('class="entry-content"');
-    if (bodyStart === -1) bodyStart = html.indexOf('class="post-content"');
-    var bodyHtml = bodyStart !== -1 ? html.slice(bodyStart) : html;
+    // Strategy 1: grab the full-size URL from the <a href> wrapping the layout image.
+    // Blogger wraps thumbnails in <a href="...s1600/..."><img src="...s320/..."></a>
+    var aHrefRe = /href="(https?:\/\/(?:blogger\.googleusercontent\.com|lh\d+\.googleusercontent\.com|\d+\.bp\.blogspot\.com)\/[^"]+\/s1600\/[^"]+)"/gi;
+    var m = aHrefRe.exec(html);
+    if (m) { return m[1]; }
 
-    var match, best = null, bestSize = 0;
-    GOOGLE_IMG_RE.lastIndex = 0;
-
-    while ((match = GOOGLE_IMG_RE.exec(bodyHtml)) !== null) {
-        var url = match[1];
-        // Skip tiny icons (s32, s16, etc.)
+    // Strategy 2: fall back to any <img src> on the Blogger CDN and upgrade to full size.
+    var imgSrcRe = /src="(https?:\/\/(?:blogger\.googleusercontent\.com|lh\d+\.googleusercontent\.com|\d+\.bp\.blogspot\.com)\/[^"]+)"/gi;
+    var best = null, bestSize = 0;
+    while ((m = imgSrcRe.exec(html)) !== null) {
+        var url = m[1];
         var sizeMatch = url.match(/\/s(\d+)\//);
         var size = sizeMatch ? parseInt(sizeMatch[1], 10) : 9999;
-        if (size < 80) continue;
-        // Prefer first reasonably-sized image
-        if (!best || size > bestSize) {
-            best = url;
-            bestSize = size;
-        }
+        if (size < 80) { continue; } // skip icons
+        if (!best || size > bestSize) { best = url; bestSize = size; }
+    }
+    if (best) {
+        return best.replace(/\/s\d+\//, '/s0/').replace(/=w\d+-h\d+.*$/, '');
     }
 
-    if (!best) return null;
-
-    // Upgrade old-style /s400/ paths to /s0/ (full resolution, Blogger allows it)
-    best = best.replace(/\/s\d+\//, '/s0/');
-    // Trim Blogger's width-limit query strings
-    best = best.replace(/=w\d+-h\d+.*$/, '');
-
-    return best;
+    return null;
 }
 
 // ── Decide which URL to scrape for each circuit ───────────────────────────────
